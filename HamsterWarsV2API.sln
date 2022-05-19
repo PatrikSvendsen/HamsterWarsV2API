@@ -3,9 +3,58 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32505.173
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{52736D28-B6BF-44B0-BC9F-B9A8327C9E74}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastracture", "Infrastracture", "{4BC8166C-4260-4410-BB92-3B3D419EE70D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{17E9CC57-18FF-4B7C-864D-F31E39AA41C3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ServiceLayer", "ServiceLayer", "{5D047510-67FC-49F7-88E2-E861D21F4829}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "Contracts\Contracts.csproj", "{6C326547-12C1-4692-B1FD-CD45FF70C5FA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HamsterWarsV2", "HamsterWarsV2\HamsterWarsV2.csproj", "{7C5AB6BA-2466-4081-8E3F-D1AC8A6F869A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D71EB719-0653-4865-8675-A840D1A02CD1}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggerService", "LoggerService\LoggerService.csproj", "{E17B2744-07BC-408B-AFCA-3087D3045E13}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{2C17C995-1F5D-4E6B-8D06-4C0C50C355D3}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6C326547-12C1-4692-B1FD-CD45FF70C5FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C326547-12C1-4692-B1FD-CD45FF70C5FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C326547-12C1-4692-B1FD-CD45FF70C5FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C326547-12C1-4692-B1FD-CD45FF70C5FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C5AB6BA-2466-4081-8E3F-D1AC8A6F869A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C5AB6BA-2466-4081-8E3F-D1AC8A6F869A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C5AB6BA-2466-4081-8E3F-D1AC8A6F869A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C5AB6BA-2466-4081-8E3F-D1AC8A6F869A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E17B2744-07BC-408B-AFCA-3087D3045E13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E17B2744-07BC-408B-AFCA-3087D3045E13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E17B2744-07BC-408B-AFCA-3087D3045E13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E17B2744-07BC-408B-AFCA-3087D3045E13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C17C995-1F5D-4E6B-8D06-4C0C50C355D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C17C995-1F5D-4E6B-8D06-4C0C50C355D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C17C995-1F5D-4E6B-8D06-4C0C50C355D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C17C995-1F5D-4E6B-8D06-4C0C50C355D3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6C326547-12C1-4692-B1FD-CD45FF70C5FA} = {52736D28-B6BF-44B0-BC9F-B9A8327C9E74}
+		{7C5AB6BA-2466-4081-8E3F-D1AC8A6F869A} = {17E9CC57-18FF-4B7C-864D-F31E39AA41C3}
+		{E17B2744-07BC-408B-AFCA-3087D3045E13} = {5D047510-67FC-49F7-88E2-E861D21F4829}
+		{2C17C995-1F5D-4E6B-8D06-4C0C50C355D3} = {52736D28-B6BF-44B0-BC9F-B9A8327C9E74}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7648C973-18BA-4497-8826-5A9D4DF3467E}
