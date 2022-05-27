@@ -7,11 +7,10 @@ public class Match
 {
     [Key]
     [Column("MatchId")]
-    public int Id { get; set; }
+    public int? Id { get; set; }
+    public int? WinnerId { get; set; }
+    public int? LoserId { get; set; }
 
-    [ForeignKey(nameof(Hamster))]
-    public int WinnerId { get; set; }
+    public ICollection<Hamster>? Hamsters { get; set; }
 
-    [ForeignKey(nameof(Hamster))]
-    public int LoserId { get; set; }
 }

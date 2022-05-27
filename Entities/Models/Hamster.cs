@@ -31,6 +31,7 @@ public class Hamster
 
 
     [ForeignKey(nameof(Match))]
-    public int MatchId { get; set; }
+    public int? MatchId { get; set; }
     public Match? Match { get; set; }
+    //public ICollection<Match>? Matches { get; set; }
 }

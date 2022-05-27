@@ -5,12 +5,17 @@ using NLog;
 var builder = WebApplication.CreateBuilder(args);
 
 LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(),
-    "nlog.config"));
+    "/nlog.config"));
 
 builder.Services.ConfigureCors();
+builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.ConfigureIISIntegration();
 builder.Services.ConfigureLoggerService();
-builder.Services.AddControllers();
+builder.Services.ConfigureRepositoryManager();
+builder.Services.ConfigureServiceManager();
+builder.Services.AddControllers()
+    .AddApplicationPart(typeof(HamsterWarsV2.Presentation.AssemblyReference) // Behövs för att veta vart inkommande skall skickas/routas
+    .Assembly);
 
 
 var app = builder.Build();
