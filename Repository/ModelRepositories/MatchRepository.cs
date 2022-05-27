@@ -3,7 +3,7 @@ using Entities.Models;
 
 namespace Repository.ModelRepositories;
 
-public class MatchRepository : RepositoryBase<Match>, IMatchRepository
+internal sealed class MatchRepository : RepositoryBase<Match>, IMatchRepository
 {
     public MatchRepository(RepositoryContext repositoryContext)
         : base(repositoryContext)

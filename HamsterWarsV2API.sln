@@ -32,6 +32,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "Service\Service.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HamsterWarsV2.Presentation", "HamsterWarsV2.Presentation\HamsterWarsV2.Presentation.csproj", "{591EE09F-703E-4F6B-9F43-09B5EF264D05}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{EBFF210A-A6F0-45E2-A388-EC8A228B8B17}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -70,6 +72,10 @@ Global
 		{591EE09F-703E-4F6B-9F43-09B5EF264D05}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{591EE09F-703E-4F6B-9F43-09B5EF264D05}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{591EE09F-703E-4F6B-9F43-09B5EF264D05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBFF210A-A6F0-45E2-A388-EC8A228B8B17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBFF210A-A6F0-45E2-A388-EC8A228B8B17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBFF210A-A6F0-45E2-A388-EC8A228B8B17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBFF210A-A6F0-45E2-A388-EC8A228B8B17}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -83,6 +89,7 @@ Global
 		{ACF7CEB6-D1B9-4838-A606-F324CB4B419C} = {52736D28-B6BF-44B0-BC9F-B9A8327C9E74}
 		{7C764C96-9DCA-4C95-9617-8C77BA71A1A4} = {5D047510-67FC-49F7-88E2-E861D21F4829}
 		{591EE09F-703E-4F6B-9F43-09B5EF264D05} = {17E9CC57-18FF-4B7C-864D-F31E39AA41C3}
+		{EBFF210A-A6F0-45E2-A388-EC8A228B8B17} = {52736D28-B6BF-44B0-BC9F-B9A8327C9E74}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7648C973-18BA-4497-8826-5A9D4DF3467E}
