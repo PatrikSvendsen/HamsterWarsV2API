@@ -17,8 +17,11 @@ public class MappingProfile : Profile
 
         CreateMap<HamsterForCreationDto, Hamster>();
         CreateMap<MatchForCreationDto, Match>();
-        CreateMap<HamsterDto, List<Hamster>>();
+        CreateMap<HamsterToUpdateDto, Hamster>();
 
+
+
+        CreateMap<HamsterDto, List<Hamster>>();
         CreateMap<List<Hamster>, HamsterDto>();
     }
 }

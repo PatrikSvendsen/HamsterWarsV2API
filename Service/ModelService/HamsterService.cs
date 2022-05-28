@@ -58,6 +58,30 @@ internal sealed class HamsterService : IHamsterService
         return hamsterDto;
     }
 
+    public void DeleteHamster(int id, bool trackChanges)
+    {
+        var hamsterToDelete = _repository.Hamster.GetHamster(id, trackChanges);
+        if (hamsterToDelete is null)
+        {
+            throw new HamsterNotFoundException(id);
+        }
+
+        _repository.Hamster.DeleteHamster(hamsterToDelete);
+        _repository.Save();
+    }
+
+    public void UpdateHamster(int id, HamsterToUpdateDto hamsterToUpdateDto, bool trackChanges)
+    {
+        var hamster = _repository.Hamster.GetHamster(id, trackChanges);
+        if (hamster is null)
+        {
+            throw new HamsterNotFoundException(id);
+        }
+
+        _mapper.Map(hamsterToUpdateDto, hamster);
+        _repository.Save();
+    }
+
     //TODO Problem att få den att fungera, mappingprofile vill inte fungera. Kommer ut som
     // en lista av hamsters men vill inte göra om till Dto.
     public HamsterDto GetRandomHamster(bool trackChanges)
@@ -79,7 +103,9 @@ internal sealed class HamsterService : IHamsterService
         var randomHamster = hamsters.Take(1).ToList();
 
         var hamsterDto = _mapper.Map<HamsterDto>(randomHamster);
-        
+
         return hamsterDto;
     }
+
+
 }

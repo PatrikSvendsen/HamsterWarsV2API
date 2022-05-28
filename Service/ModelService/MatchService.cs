@@ -35,12 +35,26 @@ internal sealed class MatchService : IMatchService
         return matchToReturn;
     }
 
-    public MatchDto GetMatch(int matchId, bool trackChanges)
+    public void DeleteMatch(int id, bool trackChanges)
     {
-        var matchDb = _repository.Match.GetMatch(matchId, trackChanges);
+        //TODO Här bör koden ligga för de hamstrar som blir påverkade av deleten.
+        // Ska resultaten återställas?
+
+        var matchToDelete = _repository.Match.GetMatch(id, trackChanges: false);
+        if (matchToDelete is null)
+        {
+            throw new MatchNotFoundException(id);
+        }
+        _repository.Match.DeleteMatch(matchToDelete);
+        _repository.Save();
+    }
+
+    public MatchDto GetMatch(int id, bool trackChanges)
+    {
+        var matchDb = _repository.Match.GetMatch(id, trackChanges);
         if (matchDb is null)
         {
-            throw new MatchNotFoundException(matchId);
+            throw new MatchNotFoundException(id);
         }
         var match = _mapper.Map<MatchDto>(matchDb);
         return match;

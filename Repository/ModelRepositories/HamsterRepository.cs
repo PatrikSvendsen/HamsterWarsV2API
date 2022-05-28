@@ -20,4 +20,6 @@ internal sealed class HamsterRepository : RepositoryBase<Hamster>, IHamsterRepos
         .SingleOrDefault();
 
     public void CreateHamster(Hamster hamster) => Create(hamster);
+
+    public void DeleteHamster(Hamster hamster) => Delete(hamster);
 }

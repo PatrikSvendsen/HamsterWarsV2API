@@ -2,41 +2,50 @@
 using Service.Contracts;
 using Shared.DataTransferObjects.Match;
 
-namespace HamsterWarsV2.Presentation.Controllers
+namespace HamsterWarsV2.Presentation.Controllers;
+
+[Route("api/[controller]")]
+public class MatchController : ControllerBase
 {
-    [Route("api/[controller]")]
-    public class MatchController : ControllerBase
+    private readonly IServiceManager _service;
+
+    public MatchController(IServiceManager service) => _service = service;
+
+    [HttpGet]
+    [Route("/matches")]
+    public IActionResult GetMatches()
     {
-        private readonly IServiceManager _service;
+        var matches = _service.MatchService.GetMatches(trackChanges: false);
+        return Ok(matches);
+    }
 
-        public MatchController(IServiceManager service) => _service = service;
+    [HttpGet]
+    [Route("/matches/{id}")]
+    public IActionResult GetMatch(int id)
+    {
+        var match = _service.MatchService.GetMatch(id, trackChanges: false);
+        return Ok(match);
+    }
 
-        [HttpGet]
-        [Route("/matches")]
-        public IActionResult GetMatches()
+    [HttpPost]
+    [Route("/matches")]
+    public IActionResult CreateMatch([FromBody] MatchForCreationDto match)
+    {
+        if (match is null)
         {
-            var matches = _service.MatchService.GetMatches(trackChanges: false);
-            return Ok(matches);
+            return BadRequest("MatchForCreationDto object is null");
         }
 
-        [HttpGet]
-        [Route("/matches/{id}")]
-        public IActionResult GetMatch(int id)
-        {
-            var match = _service.MatchService.GetMatch(id, trackChanges: false);
-            return Ok(match);
-        }
+        var matchToReturn = _service.MatchService.CreateMatch(match, trackChanges: false);
 
-        [HttpPost]
-        public IActionResult CreateMatch([FromBody] MatchForCreationDto match)
-        {
-            if (match is null)
-            {
-                return BadRequest("MatchForCreationDto object is null");
-            }
-            var matchToReturn = _service.MatchService.CreateMatch(match, trackChanges: false);
+        return CreatedAtRoute(new { id = matchToReturn.Id }, matchToReturn);
+    }
 
-            return CreatedAtRoute(new { id = matchToReturn.Id}, matchToReturn);
-        }
+    [HttpDelete]
+    [Route("/matches/{id}")]
+    public IActionResult DeleteMatch(int id)
+    {
+        _service.MatchService.DeleteMatch(id, trackChanges: false);
+        return NoContent();
     }
 }
