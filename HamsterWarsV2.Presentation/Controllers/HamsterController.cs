@@ -3,7 +3,7 @@ using Service.Contracts;
 
 namespace HamsterWarsV2.Presentation.Controllers // Gillar inte File-scope i controllern
 {
-    [Route("api/[controller]")]
+    [Route("api/hamsters")]
     [ApiController]
     public class HamsterController : ControllerBase
     {

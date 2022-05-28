@@ -9,4 +9,13 @@ internal sealed class MatchRepository : RepositoryBase<Match>, IMatchRepository
         : base(repositoryContext)
     {
     }
+
+    public Match GetMatch(int matchId, bool trackChanges) =>
+        FindByCondition(m => m.Id.Equals(matchId), trackChanges)
+        .SingleOrDefault();
+
+    public IEnumerable<Match> GetMatches(bool trackChanges) =>
+        FindAll(trackChanges)
+        .OrderBy(e => e.WinnerId)
+        .ToList();
 }

@@ -1,4 +1,5 @@
 ﻿using Contracts;
+using HamsterWarsV2.CustomFormatter;
 using LoggerService;
 using Microsoft.EntityFrameworkCore;
 using Repository;
@@ -36,4 +37,7 @@ public static class ServiceExtensions
 
     public static void ConfigureServiceManager(this IServiceCollection services) =>
         services.AddScoped<IServiceManager, ServiceManager>();
+
+    public static IMvcBuilder AddCustomCSVFormatter(this IMvcBuilder builder) =>
+        builder.AddMvcOptions(config => config.OutputFormatters.Add(new CsvOutputFormatter()));
 }

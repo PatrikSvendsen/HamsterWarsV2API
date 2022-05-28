@@ -20,16 +20,16 @@ internal sealed class HamsterService : IHamsterService
         _mapper = mapper;
     }
 
-    public IEnumerable<HamsterDto> GetAllHamsters(bool trackChanges)
+    public IEnumerable<MatchDto> GetAllHamsters(bool trackChanges)
     {
         var hamsters = _repository.Hamster.GetAllHamsters(trackChanges);
 
-        var hamstersDto = _mapper.Map<IEnumerable<HamsterDto>>(hamsters);
+        var hamstersDto = _mapper.Map<IEnumerable<MatchDto>>(hamsters);
 
         return hamstersDto;
     }
 
-    public HamsterDto GetHamster(int id, bool trackChanges)
+    public MatchDto GetHamster(int id, bool trackChanges)
     {
         var hamster = _repository.Hamster.GetHamster(id, trackChanges);
         if (hamster is null)
@@ -37,7 +37,7 @@ internal sealed class HamsterService : IHamsterService
             throw new HamsterNotFoundException(id);
         }
 
-        var hamsterDto = _mapper.Map<HamsterDto>(hamster);
+        var hamsterDto = _mapper.Map<MatchDto>(hamster);
         
         return hamsterDto;
     }

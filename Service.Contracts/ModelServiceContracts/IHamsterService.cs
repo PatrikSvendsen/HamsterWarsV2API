@@ -4,6 +4,6 @@ namespace Service.Contracts.ModelServiceContracts;
 
 public interface IHamsterService
 {
-    IEnumerable<HamsterDto> GetAllHamsters(bool trackChanges);
-    HamsterDto GetHamster(int hamsterId, bool trackChanges);
+    IEnumerable<MatchDto> GetAllHamsters(bool trackChanges);
+    MatchDto GetHamster(int hamsterId, bool trackChanges);
 }

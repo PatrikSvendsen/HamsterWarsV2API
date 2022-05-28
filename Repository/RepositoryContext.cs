@@ -17,5 +17,6 @@ public class RepositoryContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelbuilder)
     {
         modelbuilder.ApplyConfiguration(new HamsterConfiguration());
+        modelbuilder.ApplyConfiguration(new MatchConfiguration());
     }
 }
