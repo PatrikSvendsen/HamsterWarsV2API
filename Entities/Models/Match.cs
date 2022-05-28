@@ -10,6 +10,7 @@ public class Match
     public int? Id { get; set; }
     public int? WinnerId { get; set; }
     public int? LoserId { get; set; }
+    public DateTime TimeStamp { get; set; }
 
     public ICollection<Hamster>? Hamsters { get; set; }
 

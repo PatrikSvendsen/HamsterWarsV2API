@@ -1,3 +1,4 @@
 ﻿namespace Shared.DataTransferObjects.Match;
 
-public record MatchDto(int Id, int WinnerId, int LoserId);
+//TODO Göra DateTime snyggare när objectet hämtas?
+public record MatchDto(int Id, int WinnerId, int LoserId, DateTime TimeStamp);

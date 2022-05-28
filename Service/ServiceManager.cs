@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BusinessLogic.Extensions;
 using Contracts;
 using Service.Contracts;
 using Service.Contracts.ModelServiceContracts;

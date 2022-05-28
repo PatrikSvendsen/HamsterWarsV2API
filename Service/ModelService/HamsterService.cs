@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using BusinessLogic.Extensions;
 using Contracts;
-using Entities.Exceptions;
+using Entities.Exceptions.NotFoundException.NotFoundException;
+using Entities.Models;
 using Service.Contracts.ModelServiceContracts;
 using Shared.DataTransferObjects.Hamster;
 
@@ -11,6 +13,8 @@ internal sealed class HamsterService : IHamsterService
     private readonly IRepositoryManager _repository;
     private readonly ILoggerManager _logger;
     private readonly IMapper _mapper;
+    //private readonly IExtensionMethods<Hamster> _extensions;
+    private static Random rnd = new Random();
 
     public HamsterService(IRepositoryManager repository, ILoggerManager logger,
         IMapper mapper)
@@ -20,16 +24,28 @@ internal sealed class HamsterService : IHamsterService
         _mapper = mapper;
     }
 
-    public IEnumerable<MatchDto> GetAllHamsters(bool trackChanges)
+    public HamsterDto CreateHamster(HamsterForCreationDto hamster)
+    {
+        var hamsterEntity = _mapper.Map<Hamster>(hamster);
+
+        _repository.Hamster.CreateHamster(hamsterEntity);
+        _repository.Save();
+
+        var hamsterToReturn = _mapper.Map<HamsterDto>(hamsterEntity);
+
+        return hamsterToReturn;
+    }
+
+    public IEnumerable<HamsterDto> GetAllHamsters(bool trackChanges)
     {
         var hamsters = _repository.Hamster.GetAllHamsters(trackChanges);
 
-        var hamstersDto = _mapper.Map<IEnumerable<MatchDto>>(hamsters);
+        var hamstersDto = _mapper.Map<IEnumerable<HamsterDto>>(hamsters);
 
         return hamstersDto;
     }
 
-    public MatchDto GetHamster(int id, bool trackChanges)
+    public HamsterDto GetHamster(int id, bool trackChanges)
     {
         var hamster = _repository.Hamster.GetHamster(id, trackChanges);
         if (hamster is null)
@@ -37,7 +53,32 @@ internal sealed class HamsterService : IHamsterService
             throw new HamsterNotFoundException(id);
         }
 
-        var hamsterDto = _mapper.Map<MatchDto>(hamster);
+        var hamsterDto = _mapper.Map<HamsterDto>(hamster);
+
+        return hamsterDto;
+    }
+
+    //TODO Problem att få den att fungera, mappingprofile vill inte fungera. Kommer ut som
+    // en lista av hamsters men vill inte göra om till Dto.
+    public HamsterDto GetRandomHamster(bool trackChanges)
+    {
+        var hamsters = _repository.Hamster.GetAllHamsters(trackChanges: false).ToList();
+        //var randomHamster = _extensions.RandomGenerator(hamsters);
+
+        int n = hamsters.Count();
+        // Plockat från Stackoverflow/google --https://blog.codinghorror.com/shuffling/
+        while (n > 1)
+        {
+            int k = (rnd.Next(0, n) % n);
+            n--;
+            Hamster value = hamsters[k];
+            hamsters[k] = hamsters[n];
+            hamsters[n] = value;
+        }
+
+        var randomHamster = hamsters.Take(1).ToList();
+
+        var hamsterDto = _mapper.Map<HamsterDto>(randomHamster);
         
         return hamsterDto;
     }

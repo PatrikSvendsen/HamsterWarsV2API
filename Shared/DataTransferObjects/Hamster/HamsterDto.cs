@@ -1,6 +1,6 @@
 ﻿namespace Shared.DataTransferObjects.Hamster;
 
-public record MatchDto
+public record HamsterDto
 {
     public int Id { get; set; }
     public string? Name { get; set; }

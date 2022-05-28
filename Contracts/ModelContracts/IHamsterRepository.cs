@@ -6,4 +6,5 @@ public interface IHamsterRepository
 {
     IEnumerable<Hamster> GetAllHamsters(bool trackChanges);
     Hamster GetHamster(int hamsterId, bool trackChanges);
+    void CreateHamster(Hamster hamster);
 }

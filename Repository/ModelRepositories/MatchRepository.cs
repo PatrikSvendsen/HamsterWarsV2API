@@ -10,6 +10,8 @@ internal sealed class MatchRepository : RepositoryBase<Match>, IMatchRepository
     {
     }
 
+    public void CreateMatch(Match match) => Create(match);
+
     public Match GetMatch(int matchId, bool trackChanges) =>
         FindByCondition(m => m.Id.Equals(matchId), trackChanges)
         .SingleOrDefault();

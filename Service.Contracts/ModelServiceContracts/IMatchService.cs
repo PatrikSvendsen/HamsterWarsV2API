@@ -6,4 +6,5 @@ public interface IMatchService
 {
     IEnumerable<MatchDto> GetMatches(bool trackChanges);
     MatchDto GetMatch(int matchId, bool trackChanges);
+    MatchDto CreateMatch(MatchForCreationDto matchForCreationDto, bool trackChanges);
 }

@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using Contracts;
 using Entities.ErrorModel;
-using Entities.Exceptions;
+using Entities.Exceptions.NotFoundException.NotFoundException;
 using Microsoft.AspNetCore.Diagnostics;
 
 namespace HamsterWarsV2.Extensions;
@@ -23,6 +23,7 @@ public static class ExceptionMiddlewareExtensions
                     context.Response.StatusCode = contextFeature.Error switch
                     {
                         NotFoundException => StatusCodes.Status404NotFound,
+                        BadHttpRequestException => StatusCodes.Status400BadRequest,
                         _ => StatusCodes.Status500InternalServerError
                     };
 

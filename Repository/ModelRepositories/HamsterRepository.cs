@@ -12,10 +12,12 @@ internal sealed class HamsterRepository : RepositoryBase<Hamster>, IHamsterRepos
 
     public IEnumerable<Hamster> GetAllHamsters(bool trackChanges) =>
         FindAll(trackChanges)
-        .OrderBy(h => h.FavFood)
+        .OrderBy(h => h.Id)
         .ToList();
 
     public Hamster GetHamster(int hamsterId, bool trackChanges) =>
         FindByCondition(c => c.Id.Equals(hamsterId), trackChanges)
         .SingleOrDefault();
+
+    public void CreateHamster(Hamster hamster) => Create(hamster);
 }
