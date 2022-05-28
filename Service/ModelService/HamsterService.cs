@@ -45,6 +45,22 @@ internal sealed class HamsterService : IHamsterService
         return hamstersDto;
     }
 
+    public IEnumerable<HamsterDto> GetTop5Hamsters(bool trackChanges)
+    {
+        var hamsters = _repository.Hamster.GetAllHamsters(trackChanges)
+            .OrderByDescending(h => h.Wins)
+            .Take(5);
+
+        var hamstersDto = _mapper.Map<IEnumerable<HamsterDto>>(hamsters);
+
+        return hamstersDto;
+    }
+
+    public IEnumerable<HamsterDto> GetBot5Hamsters(bool trackChanges)
+    {
+        throw new NotImplementedException();
+    }
+
     public HamsterDto GetHamster(int id, bool trackChanges)
     {
         var hamster = _repository.Hamster.GetHamster(id, trackChanges);
@@ -106,6 +122,4 @@ internal sealed class HamsterService : IHamsterService
 
         return hamsterDto;
     }
-
-
 }

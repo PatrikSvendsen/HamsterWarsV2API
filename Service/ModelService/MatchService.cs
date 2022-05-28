@@ -49,6 +49,27 @@ internal sealed class MatchService : IMatchService
         _repository.Save();
     }
 
+    public IEnumerable<MatchDto> GetAllHamsterMatches(int hamsterId, bool trackChanges)
+    {
+        var hamsterDb = _repository.Hamster.GetHamster(hamsterId, trackChanges: false);
+        if (hamsterDb is null)
+        {
+            throw new HamsterNotFoundException(hamsterId);
+        }
+
+        var hamsterMatches = _repository.Match.GetMatches(trackChanges: false)
+             .Where(x => x.WinnerId == hamsterId || x.LoserId == hamsterId);
+
+        if (hamsterMatches.Count() is 0)
+        {
+            throw new MatchesNotFoundException();
+        }
+
+        var hamsterMatch = _mapper.Map<IEnumerable<MatchDto>>(hamsterMatches);
+
+        return hamsterMatch;
+    }
+
     public MatchDto GetMatch(int id, bool trackChanges)
     {
         var matchDb = _repository.Match.GetMatch(id, trackChanges);

@@ -18,6 +18,7 @@ public class HamsterController : ControllerBase
         var hamsters = _service.HamsterService.GetAllHamsters(trackChanges: false);
         return Ok(hamsters);
     }
+
     [HttpGet]
     [Route("/hamsters/random")]
     public IActionResult GetRandomHamster()
@@ -32,6 +33,14 @@ public class HamsterController : ControllerBase
     {
         var hamster = _service.HamsterService.GetHamster(id, trackChanges: false);
         return Ok(hamster);
+    }
+
+    [HttpGet]
+    [Route("/winners")]
+    public IActionResult GetTop5Hamsters()
+    {
+        var hamsters = _service.HamsterService.GetTop5Hamsters(trackChanges: false);
+        return Ok(hamsters);
     }
 
     [HttpPost]

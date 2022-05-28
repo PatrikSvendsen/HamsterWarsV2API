@@ -24,4 +24,6 @@ public interface IMatchService
     /// Metod som tar bort en match.
     /// </summary>
     void DeleteMatch(int id, bool trackChanges);
+
+    IEnumerable<MatchDto> GetAllHamsterMatches(int hamsterId, bool trackChanges);
 }

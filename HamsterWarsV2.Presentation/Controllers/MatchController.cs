@@ -27,6 +27,14 @@ public class MatchController : ControllerBase
         return Ok(match);
     }
 
+    [HttpGet]
+    [Route("/matchWinners/{hamsterId}")]
+    public IActionResult GetHamsterMatches(int hamsterId)
+    {
+        var hamsterMatches = _service.MatchService.GetAllHamsterMatches(hamsterId, trackChanges: false);
+        return Ok(hamsterMatches);
+    }
+
     [HttpPost]
     [Route("/matches")]
     public IActionResult CreateMatch([FromBody] MatchForCreationDto match)
@@ -48,4 +56,6 @@ public class MatchController : ControllerBase
         _service.MatchService.DeleteMatch(id, trackChanges: false);
         return NoContent();
     }
+
+   
 }
