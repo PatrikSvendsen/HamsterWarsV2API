@@ -1,0 +1,123 @@
+﻿@page "/battle"
+@using HamsterWarsV2.Client.Components
+@using HamsterWarsV2.Client.HttpRepository.HamsterHttp
+@using HamsterWarsV2.Client.HttpRepository.MatchHttp
+@inject IHamsterHttpRepository HamsterRepository
+@inject IMatchHttpRepository MatchRepository
+
+<h3>Welcome to this ultimate hamster battle.</h3>
+
+@if (HamsterList.Count == 0)
+{
+    <WrapperContainerBattleComponent>
+        <p>test</p>
+        <img src="images/spinninghamster.gif" class="img-loading" />
+    </WrapperContainerBattleComponent>
+}
+else
+{
+    <WrapperContainerBattleComponent>
+        <WrapperContainerBattleComponent>
+            @foreach (var hamster in HamsterList)
+            {
+                <CardBattleComponent Heading="@hamster.Name" Source="@hamster.ImgName">
+                    <br />
+                    Age: @hamster.Age
+                    Loves: @hamster.Loves
+                    FavFood: @hamster.FavFood<br />
+                    <div class="btn btn-success d-flex text" @onclick="@((e) => WinningHamster(e, @hamster.Id))">Vote</div>
+                </CardBattleComponent>
+            }
+        </WrapperContainerBattleComponent>
+        <div class="d-grid gap-2 col-6 mx-auto">
+            <div class="btn btn-secondary btn-lg" @onclick="ResetBattle">Generate new battle</div>
+            <br />
+        </div>
+        <WrapperContainerBattleComponent>
+            @foreach (var hamster in oldHamsterList)
+            {
+                <CardAfterBattleComponent Heading="@hamster.Name" HeadingInt="@hamster.Id">
+                    <br />
+                    <div>
+                        <p>
+                            This hamster has played a total of @hamster.Games games and has a win rate of
+                            @GenerateWinLossProcentage(hamster) % with @hamster.Wins wins in total.
+                        </p>
+                        <p>@hamster.Name has lost @hamster.Defeats games.</p>
+                    </div>
+                </CardAfterBattleComponent>
+            }
+        </WrapperContainerBattleComponent>
+    </WrapperContainerBattleComponent>
+}
+
+@code {
+
+    private static readonly Random rnd = new Random();
+    private List<HamsterDto> HamsterList { get; set; } = new List<HamsterDto>();
+    private List<HamsterDto> oldHamsterList { get; set; } = new List<HamsterDto>();
+    private MatchForCreationDto Match { get; set; } = new MatchForCreationDto();
+
+    [Parameter]
+    public EventCallback<List<HamsterDto>> ResetList { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        //HamsterList = await HamsterRepository.GetHamsters();
+        await ShuffleHamsters();
+    }
+
+    async void ResetBattle()
+    {
+        oldHamsterList = HamsterList;
+        HamsterList = new List<HamsterDto>();
+        await ResetList.InvokeAsync(await ShuffleHamsters());
+        StateHasChanged();
+    }
+
+    double GenerateWinLossProcentage(HamsterDto hamster)
+    {
+        var result = hamster.Games;
+
+        if (result == 0)
+        {
+            return 0;
+        }
+        return ((@hamster.Wins * 100) / hamster.Games);
+    }
+
+    async Task<List<HamsterDto>> ShuffleHamsters()
+    {
+        for (int i = 1; i <= 2; i++)
+        {
+            var hamster = await HamsterRepository.GetRandomHamster();
+            HamsterList.Add(hamster);
+        }
+        return HamsterList;
+    }
+
+    protected async void WinningHamster(MouseEventArgs mouseEventArgs, int winningId)
+    {
+        foreach (var hamster in HamsterList)
+        {
+            if (hamster.Id == winningId)
+            {
+                hamster.Wins += 1;
+                hamster.Games += 1;
+                Match.WinnerId = winningId;
+                await HamsterRepository.UpdateHamster(hamster);
+            }
+            else
+            {
+                hamster.Defeats += 1;
+                hamster.Games += 1;
+                Match.LoserId = hamster.Id;
+                await HamsterRepository.UpdateHamster(hamster);
+            }
+        }
+        await MatchRepository.CreateMatch(Match);
+        Match = new MatchForCreationDto();
+        oldHamsterList = HamsterList;
+        StateHasChanged();
+    }
+}

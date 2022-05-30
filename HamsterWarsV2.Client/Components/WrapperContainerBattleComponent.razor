@@ -1,0 +1,14 @@
+﻿<body>
+    <div class="wrapper">
+        <div class="row">
+            @ChildContent
+        </div>
+    </div>
+</body>
+
+@code {
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+}

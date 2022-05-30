@@ -34,7 +34,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HamsterWarsV2.Presentation"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csproj", "{EBFF210A-A6F0-45E2-A388-EC8A228B8B17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogic", "BusinessLogic\BusinessLogic.csproj", "{7765C96F-2CC6-4E4C-B1D7-B81A9D000A35}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogic", "BusinessLogic\BusinessLogic.csproj", "{7765C96F-2CC6-4E4C-B1D7-B81A9D000A35}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HamsterWarsV2.Client", "HamsterWarsV2.Client\HamsterWarsV2.Client.csproj", "{8BF37791-D866-4CDC-8DBC-D882C67A42A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -82,6 +84,10 @@ Global
 		{7765C96F-2CC6-4E4C-B1D7-B81A9D000A35}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7765C96F-2CC6-4E4C-B1D7-B81A9D000A35}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7765C96F-2CC6-4E4C-B1D7-B81A9D000A35}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BF37791-D866-4CDC-8DBC-D882C67A42A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BF37791-D866-4CDC-8DBC-D882C67A42A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BF37791-D866-4CDC-8DBC-D882C67A42A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BF37791-D866-4CDC-8DBC-D882C67A42A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -97,6 +103,7 @@ Global
 		{591EE09F-703E-4F6B-9F43-09B5EF264D05} = {17E9CC57-18FF-4B7C-864D-F31E39AA41C3}
 		{EBFF210A-A6F0-45E2-A388-EC8A228B8B17} = {52736D28-B6BF-44B0-BC9F-B9A8327C9E74}
 		{7765C96F-2CC6-4E4C-B1D7-B81A9D000A35} = {5D047510-67FC-49F7-88E2-E861D21F4829}
+		{8BF37791-D866-4CDC-8DBC-D882C67A42A5} = {17E9CC57-18FF-4B7C-864D-F31E39AA41C3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7648C973-18BA-4497-8826-5A9D4DF3467E}

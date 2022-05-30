@@ -1,0 +1,42 @@
+﻿.img-loading {
+    max-height: 600px;
+    max-width: 600px;
+}
+
+.img-battle {
+    max-height: 350px;
+    max-width: 350px;
+}
+
+body {
+    flex: 1;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #ddd;
+}
+
+.card-img-top {
+    box-shadow: 0 5px 10px rgba(0,0,0,0,5);
+}
+
+.card-body {
+    text-align: center;
+    box-shadow: 0px 15px 15px -8px rgba(0,0,0,0,5);
+}
+
+    .card-body h6 {
+        font-size: 16px;
+        text-transform: uppercase;
+        color: deeppink;
+    }
+
+.card-title {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+@media (max-width:800px) {
+    .mx-20 {
+        margin-bottom: 20px;
+    }
+}

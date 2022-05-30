@@ -1,0 +1,66 @@
+﻿@page "/create"
+@using HamsterWarsV2.Client.HttpRepository.HamsterHttp
+@inject IHamsterHttpRepository HamsterRepository
+@inject NavigationManager NavigationManager
+
+@if (loading)
+{
+    <span>@message</span>
+}
+<EditForm Model="hamster" OnValidSubmit="AddHamster">
+    <DataAnnotationsValidator />
+    <div class="mb-0">
+        <label for="name">Name</label>
+        <InputText id="name" @bind-Value="hamster.Name" class="form-control" placeholder="Enter hamster name here"></InputText>
+    </div>
+    <div class="mb-0">
+        <label for="imgName">Img Url</label>
+        <InputText id="imgName" @bind-Value="hamster.ImgName" class="form-control" placeholder="Put imgurl here"></InputText>
+    </div>
+    <div class="mb-0">
+        <img class="img-edit" src="@hamster.ImgName" />
+    </div>
+    <div class="mb-0">
+        <label for="age">Age</label>
+        <InputSelect id="age" @bind-Value="hamster.Age" class="form-control">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+        </InputSelect>
+    </div>
+    <div class="mb-0">
+        <label for="favFood">FavFood</label>
+        <InputText id="favFood" @bind-Value="hamster.FavFood" class="form-control" placeholder="Favourite hamster food"></InputText>
+    </div>
+    <div class="mb-0">
+        <label for="loves">Loves</label>
+        <InputText id="loves" @bind-Value="hamster.Loves" class="form-control" placeholder="What does this hamster love the most?"></InputText>
+    </div>
+    <div class="col">
+    </div>
+    <button type="submit" class="btn btn-primary float-end">@btnText</button>
+    <ValidationSummary />
+</EditForm>
+
+
+@code
+{
+
+    [Parameter]
+    public int Id { get; set; }
+
+    HamsterForCreationDto hamster = new HamsterForCreationDto();
+    bool loading = true;
+    string btnText = "Add Hamster";
+    string message = "Loading...";
+
+    async void AddHamster()
+    {
+        var newHamster = await HamsterRepository.CreateHamster(hamster);
+        NavigationManager.NavigateTo($"hamsters/{newHamster.Id}");
+    }
+
+
+}

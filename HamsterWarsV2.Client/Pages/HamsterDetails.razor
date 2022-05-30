@@ -1,0 +1,106 @@
+﻿@page "/hamsters/{id:int}"
+@page "/matchwinners/{id:int}"
+@using HamsterWarsV2.Client.Components
+@using HamsterWarsV2.Client.HttpRepository.HamsterHttp
+@inject IHamsterHttpRepository HamsterRepository
+@inject NavigationManager NavigationManager
+
+@if (hamster == null)
+{
+    <span>@message</span>
+}
+else
+{
+    <WrapperContainerBattleComponent>
+        <CardGalleryComponent Heading="@hamster.Name" Source="@hamster.ImgName">
+            <p>
+                Age: @hamster.Age<br />
+                Loves: @hamster.Loves<br />
+                Favourite food: @hamster.FavFood<br />
+                Games played: @hamster.Games<br />
+                Games won: @hamster.Wins<br />
+                Totalt defeats: @hamster.Defeats
+            </p>
+        </CardGalleryComponent>
+    </WrapperContainerBattleComponent>
+
+    <button class="btn btn-danger float-start" @onclick="DeleteHamster">
+        Delete Hamster
+    </button>
+
+    @*    <button class="btn btn-warning" @onclick="@(() => EditHamster(@hamster.Id))">
+        Edit
+    </button>*@
+}
+
+@*@if (MatchService.Matches == null || MatchService.Matches.Count == 0)
+{
+    <br />
+
+    <span>Loading all matches...</span>
+}
+else
+{
+    <ListMatchComponent Matches="@MatchService.Matches" Context="match">
+        <TableHeader>
+            <th>ID</th>
+            <th>Winner</th>
+            <th>Loser</th>
+        </TableHeader>
+        <RowTemplate>
+            <td>@match.Id</td>
+            <td>@match.WinnerId</td>
+            <td>@match.LoserId</td>
+        </RowTemplate>
+    </ListMatchComponent>
+}*@
+
+@code {
+
+    private HamsterDto? hamster = null;
+    private string message = string.Empty;
+
+    [Parameter]
+    public int Id { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        //hamster = await MatchService.GetAllHamsterMatches(Id);
+        hamster = await HamsterRepository.GetHamster(Id);
+    }
+
+    async void DeleteHamster()
+    {
+        await HamsterRepository.DeleteHamster(hamster.Id);
+        NavigationManager.NavigateTo("/gallery");
+    }
+
+    //protected override async Task OnParametersSetAsync()
+    //{
+    //    //message = "Getting hamster..";
+    //    //var hamster = await HamsterRepository.GetHamster(Id);
+
+    //    //if (!result.Success)
+    //    //{
+    //    //    message = result.Message;
+    //    //}
+    //    //else if(result.Data.Deleted == true)
+    //    //{
+    //    //    hamster = result.Data;
+    //    //    hamster.Name = "Hamster has been deleted";
+    //    //    hamster.Age = 0;
+    //    //    hamster.Loves = "Points remains to keep everyone happy";
+    //    //    hamster.FavFood = "Not much to see here!";
+    //    //    hamster.ImgName = string.Empty;
+    //    //}
+    //    //if (result.Success)
+    //    //{
+    //    //    hamster = result.Data;
+    //    //}
+    //}
+    //void EditHamster(int hamsterId)
+    //{
+    //    NavigationManager.NavigateTo($"edit/{hamsterId}");
+    //}
+
+}

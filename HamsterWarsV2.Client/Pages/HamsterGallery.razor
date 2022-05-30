@@ -1,0 +1,45 @@
+﻿@page "/gallery"
+@using HamsterWarsV2.Client.Components
+@using HamsterWarsV2.Client.HttpRepository.HamsterHttp
+@inject IHamsterHttpRepository HamsterRepository
+@inject NavigationManager NavigationManager
+
+else
+{
+    <button class="btn btn-primary" @onclick="CreateHamster">
+        <i class="oi oi-plus"></i>
+        Click here to add a new hamster
+    </button>
+    <WrapperContainerBattleComponent>
+        @foreach (var hamster in Hamsters)
+        {
+                <CardGalleryComponent Heading="@hamster.Name" Source="@hamster.ImgName">
+                    <p>
+                        This hamster is @hamster.Age years old and loves @hamster.Loves.
+                    </p>
+                    <button class="btn btn-success" @onclick="@(() => HamsterDetails(@hamster.Id))">
+                        More details
+                    </button>
+                </CardGalleryComponent>
+        }
+    </WrapperContainerBattleComponent>
+}
+@code {
+
+    public List<HamsterDto> Hamsters { get; set; } = new List<HamsterDto>();
+
+    protected async override Task OnInitializedAsync()
+    {
+        Hamsters = await HamsterRepository.GetHamsters();
+    }
+
+    void CreateHamster()
+    {
+        NavigationManager.NavigateTo("/create");
+    }
+
+    void HamsterDetails(int hamsterId)
+    {
+        NavigationManager.NavigateTo($"hamsters/{hamsterId}");
+    }
+}
