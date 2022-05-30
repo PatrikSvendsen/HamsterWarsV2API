@@ -8,13 +8,13 @@ public interface IMatchRepository
     /// Metod för att hämta alla matcher från databasen
     /// </summary>
     /// <returns>En Lista av alla matcher i form av IEnumerable</returns>
-    IEnumerable<Match> GetMatches(bool trackChanges);
+    Task<IEnumerable<Match>> GetMatchesAsync(bool trackChanges);
     /// <summary>
     /// Metod för att hämta en specifik match från databasen.
     /// </summary>
     /// <param name="matchId">Specifikt id på matchen som skall hämtas. </param>
     /// <returns>Ett objekt som representerar den match som matchar id.</returns>
-    Match GetMatch(int matchId, bool trackChanges);
+    Task<Match> GetMatchAsync(int matchId, bool trackChanges);
     /// <summary>
     /// Metod som skapar ett opjekt i databasen utifrån inkommande.
     /// </summary>

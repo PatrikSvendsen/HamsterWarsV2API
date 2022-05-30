@@ -13,69 +13,87 @@ public class HamsterController : ControllerBase
 
     [HttpGet]
     [Route("/hamsters")]
-    public IActionResult GetHamsters()
+    public async Task<IActionResult> GetHamsters()
     {
-        var hamsters = _service.HamsterService.GetAllHamsters(trackChanges: false);
+        var hamsters = 
+            await _service.HamsterService.GetAllHamstersAsync(trackChanges: false);
         return Ok(hamsters);
     }
 
     [HttpGet]
     [Route("/hamsters/random")]
-    public IActionResult GetRandomHamster()
+    public async Task<IActionResult> GetRandomHamster()
     {
-        var hamster = _service.HamsterService.GetRandomHamster(trackChanges: false);
+        var hamster = 
+            await _service.HamsterService.GetRandomHamsterAsync(trackChanges: false);
         return Ok(hamster);
     }
 
     [HttpGet]
     [Route("/hamsters/{id:int}", Name = "HamsterById")]
-    public IActionResult GetHamster(int id)
+    public async Task<IActionResult> GetHamster(int id)
     {
-        var hamster = _service.HamsterService.GetHamster(id, trackChanges: false);
+        var hamster = 
+            await _service.HamsterService.GetHamsterAsync(id, trackChanges: false);
         return Ok(hamster);
     }
 
     [HttpGet]
     [Route("/winners")]
-    public IActionResult GetTop5Hamsters()
+    public async Task<IActionResult> GetTop5Hamsters()
     {
-        var hamsters = _service.HamsterService.GetTop5Hamsters(trackChanges: false);
+        var hamsters =
+            await _service.HamsterService.GetTop5HamstersAsync(trackChanges: false);
+        return Ok(hamsters);
+    }
+
+    [HttpGet]
+    [Route("/losers")]
+    public async Task<IActionResult> GetBot5Hamsters()
+    {
+        var hamsters = 
+            await _service.HamsterService.GetBot5HamstersAsync(trackChanges: false);
         return Ok(hamsters);
     }
 
     [HttpPost]
     [Route("/hamsters")]
-    public IActionResult CreateHamster([FromBody] HamsterForCreationDto hamster)
+    public async Task<IActionResult> CreateHamster([FromBody] HamsterForCreationDto hamster)
     {
         if (hamster is null)
         {
             return BadRequest("HamsterForCreationDto object is null");
         }
+        if (ModelState.IsValid == false)
+        {
+            return UnprocessableEntity(ModelState);
+        }
 
-        var createdHamster = _service.HamsterService.CreateHamster(hamster);
+        var createdHamster = 
+            await _service.HamsterService.CreateHamsterAsync(hamster);
 
         return CreatedAtRoute("HamsterById", new { id = createdHamster.Id }, createdHamster);
     }
 
     [HttpDelete]
     [Route("/hamsters/{id:int}")]
-    public IActionResult DeleteHamster(int id)
+    public async Task<IActionResult> DeleteHamster(int id)
     {
-        _service.HamsterService.DeleteHamster(id, trackChanges: false);
+        await _service.HamsterService.DeleteHamsterAsync(id, trackChanges: false);
         return NoContent();
     }
 
     [HttpPut]
     [Route("/hamsters/{id:int}")]
-    public IActionResult UpdateHamster(int id, [FromBody] HamsterToUpdateDto hamster)
+    public async Task<IActionResult> UpdateHamster(int id, [FromBody] HamsterToUpdateDto hamster)
     {
         if (hamster is null)
         {
             return BadRequest("HamsterToUpdateDto object is null");
         }
 
-        _service.HamsterService.UpdateHamster(id, hamster, trackChanges: true);
-
-        return NoContent();
+        await _service.HamsterService.UpdateHamsterAsync(id, hamster, trackChanges: true);
+        
+        return Ok(hamster);
     }
 }

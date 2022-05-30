@@ -1,5 +1,6 @@
 ﻿using Contracts.ModelContracts;
 using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Repository.ModelRepositories;
 
@@ -14,12 +15,12 @@ internal sealed class MatchRepository : RepositoryBase<Match>, IMatchRepository
 
     public void DeleteMatch(Match match) => Delete(match);
 
-    public Match GetMatch(int matchId, bool trackChanges) =>
-        FindByCondition(m => m.Id.Equals(matchId), trackChanges)
-        .SingleOrDefault();
+    public async Task<Match> GetMatchAsync(int matchId, bool trackChanges) =>
+        await FindByCondition(m => m.Id.Equals(matchId), trackChanges)
+        .SingleOrDefaultAsync();
 
-    public IEnumerable<Match> GetMatches(bool trackChanges) =>
-        FindAll(trackChanges)
+    public async Task<IEnumerable<Match>> GetMatchesAsync(bool trackChanges) =>
+        await FindAll(trackChanges)
         .OrderBy(e => e.WinnerId)
-        .ToList();
+        .ToListAsync();
 }

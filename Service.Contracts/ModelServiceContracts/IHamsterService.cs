@@ -4,14 +4,12 @@ namespace Service.Contracts.ModelServiceContracts;
 
 public interface IHamsterService
 {
-    IEnumerable<HamsterDto> GetAllHamsters(bool trackChanges);
-    HamsterDto GetHamster(int hamsterId, bool trackChanges);
-    HamsterDto CreateHamster(HamsterForCreationDto hamster);
-    HamsterDto GetRandomHamster(bool trackChanges);
-    void DeleteHamster(int id, bool trackChanges);
-    void UpdateHamster(int id, HamsterToUpdateDto hamsterToUpdateDto, bool trackChanges);
-
-    IEnumerable<HamsterDto> GetTop5Hamsters(bool trackChanges);
-    IEnumerable<HamsterDto> GetBot5Hamsters(bool trackChanges);
-
+    Task<IEnumerable<HamsterDto>> GetAllHamstersAsync(bool trackChanges);
+    Task<HamsterDto> GetHamsterAsync(int hamsterId, bool trackChanges);
+    Task<HamsterDto> CreateHamsterAsync(HamsterForCreationDto hamster);
+    Task<HamsterDto> GetRandomHamsterAsync(bool trackChanges);
+    Task DeleteHamsterAsync(int id, bool trackChanges);
+    Task UpdateHamsterAsync(int id, HamsterToUpdateDto hamsterToUpdateDto, bool trackChanges);
+    Task<IEnumerable<HamsterDto>> GetTop5HamstersAsync(bool trackChanges);
+    Task<IEnumerable<HamsterDto>> GetBot5HamstersAsync(bool trackChanges);
 }

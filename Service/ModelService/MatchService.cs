@@ -5,6 +5,7 @@ using Entities.Models;
 using Service.Contracts.ModelServiceContracts;
 using Shared.DataTransferObjects.Match;
 
+
 namespace Service.ModelService;
 
 internal sealed class MatchService : IMatchService
@@ -20,7 +21,7 @@ internal sealed class MatchService : IMatchService
         _mapper = mapper;
     }
 
-    public MatchDto CreateMatch(MatchForCreationDto matchForCreationDto, bool trackChanges)
+    public async Task<MatchDto> CreateMatchAsync(MatchForCreationDto matchForCreationDto, bool trackChanges)
     {
         var matchEntity = _mapper.Map<Match>(matchForCreationDto);
 
@@ -28,37 +29,39 @@ internal sealed class MatchService : IMatchService
         // Kanske ska ha en spärr _här_? 
 
         _repository.Match.CreateMatch(matchEntity);
-        _repository.Save();
+        await _repository.SaveAsync();
 
         var matchToReturn = _mapper.Map<MatchDto>(matchEntity);
 
         return matchToReturn;
     }
 
-    public void DeleteMatch(int id, bool trackChanges)
+    public async Task DeleteMatchAsync(int id, bool trackChanges)
     {
         //TODO Här bör koden ligga för de hamstrar som blir påverkade av deleten.
         // Ska resultaten återställas?
 
-        var matchToDelete = _repository.Match.GetMatch(id, trackChanges: false);
+        var matchToDelete = await _repository.Match.GetMatchAsync(id, trackChanges: false);
         if (matchToDelete is null)
         {
             throw new MatchNotFoundException(id);
         }
+
         _repository.Match.DeleteMatch(matchToDelete);
-        _repository.Save();
+        await _repository.SaveAsync();
     }
 
-    public IEnumerable<MatchDto> GetAllHamsterMatches(int hamsterId, bool trackChanges)
+    public async Task<IEnumerable<MatchDto>> GetAllHamsterMatchesAsync(int hamsterId, bool trackChanges)
     {
-        var hamsterDb = _repository.Hamster.GetHamster(hamsterId, trackChanges: false);
+        var hamsterDb = await _repository.Hamster.GetHamsterAsync(hamsterId, trackChanges: false);
         if (hamsterDb is null)
         {
             throw new HamsterNotFoundException(hamsterId);
         }
 
-        var hamsterMatches = _repository.Match.GetMatches(trackChanges: false)
-             .Where(x => x.WinnerId == hamsterId || x.LoserId == hamsterId);
+        var hamsterMatches = await _repository.Match.GetMatchesAsync(trackChanges: false);
+        
+        hamsterMatches.Where(x => x.WinnerId == hamsterId);
 
         if (hamsterMatches.Count() is 0)
         {
@@ -66,32 +69,30 @@ internal sealed class MatchService : IMatchService
         }
 
         var hamsterMatch = _mapper.Map<IEnumerable<MatchDto>>(hamsterMatches);
-
         return hamsterMatch;
     }
 
-    public MatchDto GetMatch(int id, bool trackChanges)
+    public async Task<MatchDto> GetMatchAsync(int id, bool trackChanges)
     {
-        var matchDb = _repository.Match.GetMatch(id, trackChanges);
+        var matchDb = await _repository.Match.GetMatchAsync(id, trackChanges);
         if (matchDb is null)
         {
             throw new MatchNotFoundException(id);
         }
+
         var match = _mapper.Map<MatchDto>(matchDb);
         return match;
     }
 
-    public IEnumerable<MatchDto> GetMatches(bool trackChanges)
+    public async Task<IEnumerable<MatchDto>> GetMatchesAsync(bool trackChanges)
     {
-        var matchFromDb = _repository.Match.GetMatches(trackChanges);
-
+        var matchFromDb = await _repository.Match.GetMatchesAsync(trackChanges);
         if (matchFromDb.Count() is 0) //TODO Går det att göra snyggare?
         {
             throw new MatchesNotFoundException();
         }
 
         var matchDto = _mapper.Map<IEnumerable<MatchDto>>(matchFromDb);
-
         return matchDto;
     }
 }

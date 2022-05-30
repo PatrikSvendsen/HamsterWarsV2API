@@ -24,46 +24,64 @@ internal sealed class HamsterService : IHamsterService
         _mapper = mapper;
     }
 
-    public HamsterDto CreateHamster(HamsterForCreationDto hamster)
+    public async Task<HamsterDto> CreateHamsterAsync(HamsterForCreationDto hamster)
     {
         var hamsterEntity = _mapper.Map<Hamster>(hamster);
 
         _repository.Hamster.CreateHamster(hamsterEntity);
-        _repository.Save();
+        await _repository.SaveAsync();
 
         var hamsterToReturn = _mapper.Map<HamsterDto>(hamsterEntity);
 
         return hamsterToReturn;
     }
 
-    public IEnumerable<HamsterDto> GetAllHamsters(bool trackChanges)
+    public async Task<IEnumerable<HamsterDto>> GetAllHamstersAsync(bool trackChanges)
     {
-        var hamsters = _repository.Hamster.GetAllHamsters(trackChanges);
+        var hamsters = await _repository.Hamster.GetAllHamstersAsync(trackChanges);
 
         var hamstersDto = _mapper.Map<IEnumerable<HamsterDto>>(hamsters);
 
         return hamstersDto;
     }
 
-    public IEnumerable<HamsterDto> GetTop5Hamsters(bool trackChanges)
+    public async Task<IEnumerable<HamsterDto>> GetTop5HamstersAsync(bool trackChanges)
     {
-        var hamsters = _repository.Hamster.GetAllHamsters(trackChanges)
-            .OrderByDescending(h => h.Wins)
-            .Take(5);
+        var hamsters = await _repository.Hamster.GetAllHamstersAsync(trackChanges);
+        
+        //TODO Kontrollera om denna fungerar korrekt
+        hamsters.OrderByDescending(h => h.Wins).Take(5);
+
+        if (hamsters.Count() is 0)
+        {
+            throw new HamstersNotFoundException();
+        }
 
         var hamstersDto = _mapper.Map<IEnumerable<HamsterDto>>(hamsters);
 
         return hamstersDto;
     }
 
-    public IEnumerable<HamsterDto> GetBot5Hamsters(bool trackChanges)
+    public async Task<IEnumerable<HamsterDto>> GetBot5HamstersAsync(bool trackChanges)
     {
-        throw new NotImplementedException();
+        var hamsters = await _repository.Hamster.GetAllHamstersAsync(trackChanges);
+        
+        //TODO Kontrollera om denna fungerar korrekt
+        hamsters.OrderByDescending(d => d.Defeats).Take(5);
+
+        //TODO Tanken är att den ska kasta en throw om det inte finns några hamstrar med förluster
+        if (hamsters.Where(d => d.Defeats == 0).Count() is 0)
+        {
+            throw new HamstersNotFoundException();
+        }
+
+        var hamstersDto = _mapper.Map<IEnumerable<HamsterDto>>(hamsters);
+        return hamstersDto;
     }
 
-    public HamsterDto GetHamster(int id, bool trackChanges)
+    public async Task<HamsterDto> GetHamsterAsync(int id, bool trackChanges)
     {
-        var hamster = _repository.Hamster.GetHamster(id, trackChanges);
+        var hamster = await _repository.Hamster.GetHamsterAsync(id, trackChanges);
         if (hamster is null)
         {
             throw new HamsterNotFoundException(id);
@@ -74,51 +92,42 @@ internal sealed class HamsterService : IHamsterService
         return hamsterDto;
     }
 
-    public void DeleteHamster(int id, bool trackChanges)
+    public async Task DeleteHamsterAsync(int id, bool trackChanges)
     {
-        var hamsterToDelete = _repository.Hamster.GetHamster(id, trackChanges);
+        var hamsterToDelete = await _repository.Hamster.GetHamsterAsync(id, trackChanges);
         if (hamsterToDelete is null)
         {
             throw new HamsterNotFoundException(id);
         }
 
         _repository.Hamster.DeleteHamster(hamsterToDelete);
-        _repository.Save();
+        await _repository.SaveAsync();
     }
 
-    public void UpdateHamster(int id, HamsterToUpdateDto hamsterToUpdateDto, bool trackChanges)
+    public async Task UpdateHamsterAsync(int id, HamsterToUpdateDto hamsterToUpdateDto, bool trackChanges)
     {
-        var hamster = _repository.Hamster.GetHamster(id, trackChanges);
+        var hamster = await _repository.Hamster.GetHamsterAsync(id, trackChanges);
         if (hamster is null)
         {
             throw new HamsterNotFoundException(id);
         }
 
         _mapper.Map(hamsterToUpdateDto, hamster);
-        _repository.Save();
+        await _repository.SaveAsync();
     }
 
     //TODO Problem att få den att fungera, mappingprofile vill inte fungera. Kommer ut som
     // en lista av hamsters men vill inte göra om till Dto.
-    public HamsterDto GetRandomHamster(bool trackChanges)
+    public async Task<HamsterDto> GetRandomHamsterAsync(bool trackChanges)
     {
-        var hamsters = _repository.Hamster.GetAllHamsters(trackChanges: false).ToList();
-        //var randomHamster = _extensions.RandomGenerator(hamsters);
+        var hamsters = await _repository.Hamster.GetAllHamstersAsync(trackChanges: false);
+        
+        hamsters.ToList();
 
-        int n = hamsters.Count();
-        // Plockat från Stackoverflow/google --https://blog.codinghorror.com/shuffling/
-        while (n > 1)
-        {
-            int k = (rnd.Next(0, n) % n);
-            n--;
-            Hamster value = hamsters[k];
-            hamsters[k] = hamsters[n];
-            hamsters[n] = value;
-        }
+        int n = rnd.Next(1, hamsters.Count());
+        var rndHamster = hamsters.Where(x => x.Id.Equals(n)).FirstOrDefault();
 
-        var randomHamster = hamsters.Take(1).ToList();
-
-        var hamsterDto = _mapper.Map<HamsterDto>(randomHamster);
+        var hamsterDto = _mapper.Map<HamsterDto>(rndHamster);
 
         return hamsterDto;
     }

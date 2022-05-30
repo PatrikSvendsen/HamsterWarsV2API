@@ -13,47 +13,55 @@ public class MatchController : ControllerBase
 
     [HttpGet]
     [Route("/matches")]
-    public IActionResult GetMatches()
+    public async Task<IActionResult> GetMatches()
     {
-        var matches = _service.MatchService.GetMatches(trackChanges: false);
+        var matches = 
+            await _service.MatchService.GetMatchesAsync(trackChanges: false);
         return Ok(matches);
     }
 
     [HttpGet]
     [Route("/matches/{id}")]
-    public IActionResult GetMatch(int id)
+    public async Task<IActionResult> GetMatch(int id)
     {
-        var match = _service.MatchService.GetMatch(id, trackChanges: false);
+        var match =
+            await _service.MatchService.GetMatchAsync(id, trackChanges: false);
         return Ok(match);
     }
 
     [HttpGet]
     [Route("/matchWinners/{hamsterId}")]
-    public IActionResult GetHamsterMatches(int hamsterId)
+    public async Task<IActionResult> GetHamsterMatches(int hamsterId)
     {
-        var hamsterMatches = _service.MatchService.GetAllHamsterMatches(hamsterId, trackChanges: false);
+        var hamsterMatches = 
+            await _service.MatchService.GetAllHamsterMatchesAsync(hamsterId, trackChanges: false);
         return Ok(hamsterMatches);
     }
 
     [HttpPost]
     [Route("/matches")]
-    public IActionResult CreateMatch([FromBody] MatchForCreationDto match)
+    public async Task<IActionResult> CreateMatch([FromBody] MatchForCreationDto match)
     {
         if (match is null)
         {
             return BadRequest("MatchForCreationDto object is null");
         }
+        if (ModelState.IsValid == false)
+        {
+            return UnprocessableEntity(ModelState);
+        }
 
-        var matchToReturn = _service.MatchService.CreateMatch(match, trackChanges: false);
+        var matchToReturn = 
+            await _service.MatchService.CreateMatchAsync(match, trackChanges: false);
 
         return CreatedAtRoute(new { id = matchToReturn.Id }, matchToReturn);
     }
 
     [HttpDelete]
     [Route("/matches/{id}")]
-    public IActionResult DeleteMatch(int id)
+    public async Task<IActionResult> DeleteMatch(int id)
     {
-        _service.MatchService.DeleteMatch(id, trackChanges: false);
+        await _service.MatchService.DeleteMatchAsync(id, trackChanges: false);
         return NoContent();
     }
 
