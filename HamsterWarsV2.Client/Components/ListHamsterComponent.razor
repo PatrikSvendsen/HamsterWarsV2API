@@ -1,0 +1,25 @@
+﻿<table class="table">
+    <thead>
+        <tr>@TableHeader</tr>
+    </thead>
+    <tbody>
+        @foreach (var hamster in Hamsters)
+        {
+            if (RowTemplate is not null)
+            {
+                <tr>@RowTemplate(hamster)</tr>
+            }
+        }
+    </tbody>
+</table>
+
+@code {
+    [Parameter]
+    public RenderFragment? TableHeader { get; set; }
+
+    [Parameter]
+    public RenderFragment<HamsterDto>? RowTemplate { get; set; }
+
+    [Parameter]
+    public IReadOnlyList<HamsterDto> Hamsters { get; set; }
+    }

@@ -7,5 +7,5 @@ public interface IMatchHttpRepository
     Task<List<MatchDto>> GetMatches();
     Task<MatchDto> GetMatch(int id);
     Task DeleteMatch(int id);
-    Task<MatchDto> CreateMatch(MatchForCreationDto matchForCreationDto);
+    Task CreateMatch(MatchForCreationDto matchForCreationDto);
 }

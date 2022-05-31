@@ -4,8 +4,7 @@
 @inject IHamsterHttpRepository HamsterRepository
 @inject NavigationManager NavigationManager
 
-else
-{
+
     <button class="btn btn-primary" @onclick="CreateHamster">
         <i class="oi oi-plus"></i>
         Click here to add a new hamster
@@ -23,7 +22,7 @@ else
                 </CardGalleryComponent>
         }
     </WrapperContainerBattleComponent>
-}
+
 @code {
 
     public List<HamsterDto> Hamsters { get; set; } = new List<HamsterDto>();

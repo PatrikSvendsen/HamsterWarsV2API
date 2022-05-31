@@ -38,7 +38,7 @@ public class HamsterHttpRepository : IHamsterHttpRepository
     {
         var hamster = JsonSerializer.Serialize(hamsterDto);
         var requestContent = new StringContent(hamster, Encoding.UTF8 , "application/json");
-        var response = await _http.PutAsync("/hamsters", requestContent);
+        var response = await _http.PutAsync($"/hamsters/{hamsterDto.Id}", requestContent);
         var content = await response.Content.ReadAsStringAsync();
         if (response.IsSuccessStatusCode == false)
         {
@@ -92,5 +92,57 @@ public class HamsterHttpRepository : IHamsterHttpRepository
         }
         var randomHamster = JsonSerializer.Deserialize<HamsterDto>(content, _options);
         return randomHamster;
+    }
+
+    public async Task<List<HamsterDto>> Get2RandomHamsters()
+    {
+        var result = await _http.GetAsync("/hamsters/randoms");
+        var content = await result.Content.ReadAsStringAsync();
+        if (result.IsSuccessStatusCode == false)
+        {
+            throw new ApplicationException(content);
+        }
+
+        var randomHamster = JsonSerializer.Deserialize<List<HamsterDto>>(content, _options);
+        if (randomHamster is null)
+        {
+            throw new ApplicationException("List is null");
+        }
+
+        return randomHamster;
+    }
+
+    public async Task<List<HamsterDto>> GetTop5Hamsters()
+    {
+        var result = await _http.GetAsync("/winners");
+        var content = await result.Content.ReadAsStringAsync();
+        if (result.IsSuccessStatusCode == false)
+        {
+            throw new ApplicationException(content);
+        }
+
+        var top5Hamsters = JsonSerializer.Deserialize<List<HamsterDto>>(content, _options);
+        if (top5Hamsters is null)
+        {
+            throw new ApplicationException("List is null");
+        }
+        return top5Hamsters;
+    }
+
+    public async Task<List<HamsterDto>> GetBot5Hamsters()
+    {
+        var result = await _http.GetAsync("/losers");
+        var content = await result.Content.ReadAsStringAsync();
+        if (result.IsSuccessStatusCode == false)
+        {
+            throw new ApplicationException(content);
+        }
+
+        var bot5Hamsters = JsonSerializer.Deserialize<List<HamsterDto>>(content, _options);
+        if (bot5Hamsters is null)
+        {
+            throw new ApplicationException("List is null");
+        }
+        return bot5Hamsters;
     }
 }

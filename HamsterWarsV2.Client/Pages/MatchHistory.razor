@@ -1,0 +1,74 @@
+﻿@page "/history"
+@using HamsterWarsV2.Client.Components
+@using HamsterWarsV2.Client.HttpRepository.MatchHttp
+@inject IMatchHttpRepository MatchRepository
+@inject NavigationManager NavigationManager
+
+@if (MatchList == null || MatchList.Count == 0)
+{
+    <span>Loading all matches...</span>
+}
+else
+{
+    @foreach (var match in MatchList)
+    {
+        <th>ID</th>
+        <th>Winner</th>
+        <th>Loser</th>
+        <td>@match.Id</td>
+        <td>@match.WinnerId</td>
+        <td>@match.LoserId</td>
+        <td type="button" class="btn btn-warning" @onclick="@(() => DeleteMatch(@match.Id))">
+            Delete Match
+        </td>
+    }
+    @*        <ListMatchComponent Matches="@MatchList" Context="match">
+            <TableHeader>
+                <th>ID</th>
+                <th>Winner</th>
+                <th>Loser</th>
+            </TableHeader>
+            <RowTemplate>
+                <td>@match.Id</td>
+                <td>@match.WinnerId</td>
+                <td>@match.LoserId</td>
+                <td type="button" class="btn btn-warning" @onclick="@(() => EditMatch(@match.Id))">
+                    Delete Match
+                </td>
+            </RowTemplate>
+        </ListMatchComponent>*@
+}
+
+@code {
+
+    [Parameter]
+    public EventCallback<List<MatchDto>> ResetList { get; set; }
+    private List<MatchDto> MatchList = new List<MatchDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        MatchList = await MatchRepository.GetMatches();
+        //GenerateMatchList();
+    }
+
+    //List<Match> GenerateMatchList()
+    //{
+    //    var list = MatchService.Matches;
+    //    MatchList = list
+    //    .Where(x => x.Deleted == false)
+    //    .ToList();
+    //    return MatchList;
+    //}
+
+    async void DeleteMatch(int id)
+    {
+        await MatchRepository.DeleteMatch(id);
+        ResetBattle();
+    }
+
+    async void ResetBattle()
+    {
+        MatchList = new List<MatchDto>();
+        await ResetList.InvokeAsync(await MatchRepository.GetMatches());
+    }
+}

@@ -27,5 +27,9 @@ public interface IHamsterHttpRepository
     /// </summary>
     Task<HamsterDto> CreateHamster(HamsterForCreationDto hamster);
     Task<HamsterDto> GetRandomHamster();
+    Task<List<HamsterDto>> Get2RandomHamsters();
+    Task<List<HamsterDto>> GetTop5Hamsters();
+    Task<List<HamsterDto>> GetBot5Hamsters();
+    
 
 }

@@ -30,6 +30,15 @@ public class HamsterController : ControllerBase
     }
 
     [HttpGet]
+    [Route("/hamsters/randoms")]
+    public async Task<IActionResult> Get2RandomHamsters()
+    {
+        var hamsters =
+            await _service.HamsterService.Get2RandomHamsterAsync(trackChanges: false);
+        return Ok(hamsters);
+    }
+
+    [HttpGet]
     [Route("/hamsters/{id:int}", Name = "HamsterById")]
     public async Task<IActionResult> GetHamster(int id)
     {

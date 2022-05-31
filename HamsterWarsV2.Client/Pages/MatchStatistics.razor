@@ -1,0 +1,46 @@
+﻿@page "/statistics"
+@inject IHamsterHttpRepository HamsterHttpRepository
+@using HamsterWarsV2.Client.Components
+@using HamsterWarsV2.Client.HttpRepository.HamsterHttp
+
+
+@if (Top5Hamsters.Count == 0 || Bottom5Hamsters.Count == 0)
+{
+    <span>Loading hamsters..</span>
+}
+else
+{
+    <WrapperContainerBattleComponent>
+        @foreach (var hamster in Top5Hamsters)
+        {
+            <CardGalleryComponent Heading="@hamster.Name" Source="@hamster.ImgName">
+                <th>Hamster Id:  </th><td>@hamster.Id</td><br />
+                <th>Games played:</th><td>@hamster.Games</td><br />
+                <th>Wins:</th> <td>@hamster.Wins</td><br />
+            </CardGalleryComponent>
+        }
+    </WrapperContainerBattleComponent>
+    <p>---------------------------------------------------------------------</p>
+    <WrapperContainerBattleComponent>
+        @foreach (var hamster in Bottom5Hamsters)
+        {
+            <CardGalleryComponent Heading="@hamster.Name" Source="@hamster.ImgName">
+                <th>Hamster Id:  </th><td>@hamster.Id</td><br />
+                <th>Games played:</th><td>@hamster.Games</td><br />
+                <th>Defeated:</th> <td>@hamster.Defeats</td><br />
+            </CardGalleryComponent>
+        }
+    </WrapperContainerBattleComponent>
+}
+
+@code {
+
+    public List<HamsterDto> Top5Hamsters { get; set; } = new List<HamsterDto>();
+    private List<HamsterDto> Bottom5Hamsters { get; set; } = new List<HamsterDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Top5Hamsters = await HamsterHttpRepository.GetTop5Hamsters();
+        Bottom5Hamsters = await HamsterHttpRepository.GetBot5Hamsters();
+    }
+}

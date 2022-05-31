@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Text;
+using System.Text.Json;
 
 namespace HamsterWarsV2.Client.HttpRepository.MatchHttp;
 
@@ -16,9 +17,19 @@ public class MatchHttpRepository : IMatchHttpRepository
         };
     }
 
-    public Task<MatchDto> CreateMatch(MatchForCreationDto matchForCreationDto)
+    public async Task CreateMatch(MatchForCreationDto matchForCreationDto)
     {
-        throw new NotImplementedException();
+        var match = JsonSerializer.Serialize(matchForCreationDto);
+        var requestContent = new StringContent(match, Encoding.UTF8, "application/json");
+        var result = await _http.PostAsync("/matches", requestContent);
+        
+        var content = await result.Content.ReadAsStringAsync();
+        if (result.IsSuccessStatusCode == false)
+        {
+            throw new ApplicationException(content);
+        }
+
+        var createdMatch = JsonSerializer.Deserialize<MatchDto>(content, _options);
     }
 
     public Task DeleteMatch(int id)

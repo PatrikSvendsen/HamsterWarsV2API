@@ -63,7 +63,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        //HamsterList = await HamsterRepository.GetHamsters();
         await ShuffleHamsters();
     }
 
@@ -88,11 +87,7 @@ else
 
     async Task<List<HamsterDto>> ShuffleHamsters()
     {
-        for (int i = 1; i <= 2; i++)
-        {
-            var hamster = await HamsterRepository.GetRandomHamster();
-            HamsterList.Add(hamster);
-        }
+        HamsterList = await HamsterRepository.Get2RandomHamsters();
         return HamsterList;
     }
 
@@ -115,6 +110,7 @@ else
                 await HamsterRepository.UpdateHamster(hamster);
             }
         }
+
         await MatchRepository.CreateMatch(Match);
         Match = new MatchForCreationDto();
         oldHamsterList = HamsterList;
