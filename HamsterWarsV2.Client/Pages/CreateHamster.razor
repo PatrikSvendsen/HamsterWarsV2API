@@ -47,7 +47,6 @@
 
 @code
 {
-
     [Parameter]
     public int Id { get; set; }
 
@@ -61,6 +60,4 @@
         var newHamster = await HamsterRepository.CreateHamster(hamster);
         NavigationManager.NavigateTo($"hamsters/{newHamster.Id}");
     }
-
-
 }

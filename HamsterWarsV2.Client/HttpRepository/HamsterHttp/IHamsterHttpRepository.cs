@@ -26,9 +26,25 @@ public interface IHamsterHttpRepository
     /// Metod för att skapa en specific hamster.
     /// </summary>
     Task<HamsterDto> CreateHamster(HamsterForCreationDto hamster);
+    /// <summary>
+    /// Metod för att hämta en random hamster.
+    /// </summary>
+    /// <returns>Komplett lista med alla hamstrar</returns>
     Task<HamsterDto> GetRandomHamster();
+    /// <summary>
+    /// Metod för att hämta 2 random hamstrar.
+    /// </summary>
+    /// <returns>Komplett lista med alla hamstrar</returns>
     Task<List<HamsterDto>> Get2RandomHamsters();
+    /// <summary>
+    /// Metod för att hämta de top 5 bästa hamstrarna.
+    /// </summary>
+    /// <returns>Komplett lista med alla hamstrar</returns>
     Task<List<HamsterDto>> GetTop5Hamsters();
+    /// <summary>
+    /// Metod för att hämta de 5 sästa hamstrarna.
+    /// </summary>
+    /// <returns>Komplett lista med alla hamstrar</returns>
     Task<List<HamsterDto>> GetBot5Hamsters();
     
 

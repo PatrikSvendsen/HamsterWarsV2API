@@ -11,16 +11,9 @@ public class MappingProfile : Profile
     {
         CreateMap<Hamster, HamsterDto>();
         CreateMap<Match, MatchDto>();
-        
-        //TODO Här bör en Mapping ligga så att en lista fylls med hamstrar.
-        // Länk finns i dokumentet.
-
         CreateMap<HamsterForCreationDto, Hamster>();
         CreateMap<MatchForCreationDto, Match>();
         CreateMap<HamsterToUpdateDto, Hamster>();
-
-
-
         CreateMap<HamsterDto, List<Hamster>>();
         CreateMap<List<Hamster>, HamsterDto>();
     }

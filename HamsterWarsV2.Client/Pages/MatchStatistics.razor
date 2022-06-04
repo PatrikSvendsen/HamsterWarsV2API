@@ -10,24 +10,25 @@
 }
 else
 {
-    <WrapperContainerBattleComponent>
+    <WrapperContainerBattleComponent Heading="Winners">
         @foreach (var hamster in Top5Hamsters)
         {
             <CardGalleryComponent Heading="@hamster.Name" Source="@hamster.ImgName">
-                <th>Hamster Id:  </th><td>@hamster.Id</td><br />
-                <th>Games played:</th><td>@hamster.Games</td><br />
-                <th>Wins:</th> <td>@hamster.Wins</td><br />
+                <p>
+                    Games Played: @hamster.Games --
+                    Wins : @hamster.Wins
+                </p>
             </CardGalleryComponent>
         }
     </WrapperContainerBattleComponent>
-    <p>---------------------------------------------------------------------</p>
-    <WrapperContainerBattleComponent>
+    <WrapperContainerBattleComponent Heading="Losers">
         @foreach (var hamster in Bottom5Hamsters)
         {
             <CardGalleryComponent Heading="@hamster.Name" Source="@hamster.ImgName">
-                <th>Hamster Id:  </th><td>@hamster.Id</td><br />
-                <th>Games played:</th><td>@hamster.Games</td><br />
-                <th>Defeated:</th> <td>@hamster.Defeats</td><br />
+                <p>
+                    Games Played: @hamster.Games --
+                    Defeats : @hamster.Defeats
+                </p>
             </CardGalleryComponent>
         }
     </WrapperContainerBattleComponent>

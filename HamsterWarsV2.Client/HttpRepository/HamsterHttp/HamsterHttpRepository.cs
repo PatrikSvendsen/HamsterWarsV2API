@@ -1,7 +1,5 @@
-﻿using System.Net.Http.Json;
-using System.Text;
+﻿using System.Text;
 using System.Text.Json;
-using Shared.DataTransferObjects.Hamster;
 
 namespace HamsterWarsV2.Client.HttpRepository.HamsterHttp;
 
@@ -37,7 +35,7 @@ public class HamsterHttpRepository : IHamsterHttpRepository
     public async Task<HamsterDto> UpdateHamster(HamsterDto hamsterDto)
     {
         var hamster = JsonSerializer.Serialize(hamsterDto);
-        var requestContent = new StringContent(hamster, Encoding.UTF8 , "application/json");
+        var requestContent = new StringContent(hamster, Encoding.UTF8, "application/json");
         var response = await _http.PutAsync($"/hamsters/{hamsterDto.Id}", requestContent);
         var content = await response.Content.ReadAsStringAsync();
         if (response.IsSuccessStatusCode == false)

@@ -8,7 +8,6 @@ namespace HamsterWarsV2.Presentation.Controllers;
 public class MatchController : ControllerBase
 {
     private readonly IServiceManager _service;
-
     public MatchController(IServiceManager service) => _service = service;
 
     [HttpGet]
@@ -64,6 +63,4 @@ public class MatchController : ControllerBase
         await _service.MatchService.DeleteMatchAsync(id, trackChanges: false);
         return NoContent();
     }
-
-   
 }

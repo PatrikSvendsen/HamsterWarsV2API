@@ -60,15 +60,15 @@ internal sealed class MatchService : IMatchService
         }
 
         var hamsterMatches = await _repository.Match.GetMatchesAsync(trackChanges: false);
-        
-        hamsterMatches.Where(x => x.WinnerId == hamsterId);
+
+        var allMatches = hamsterMatches.Where(h => h.WinnerId == hamsterId).ToList();
 
         if (hamsterMatches.Count() is 0)
         {
             throw new MatchesNotFoundException();
         }
 
-        var hamsterMatch = _mapper.Map<IEnumerable<MatchDto>>(hamsterMatches);
+        var hamsterMatch = _mapper.Map<IEnumerable<MatchDto>>(allMatches);
         return hamsterMatch;
     }
 

@@ -1,13 +1,15 @@
 ﻿<body>
     <div class="wrapper">
         <div class="row">
+            <h2>@Heading</h2>
             @ChildContent
         </div>
     </div>
 </body>
 
 @code {
-
+    [Parameter]
+    public string Heading { get; set; }
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 

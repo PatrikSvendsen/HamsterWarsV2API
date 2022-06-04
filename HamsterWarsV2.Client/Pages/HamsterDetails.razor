@@ -2,24 +2,26 @@
 @page "/matchwinners/{id:int}"
 @using HamsterWarsV2.Client.Components
 @using HamsterWarsV2.Client.HttpRepository.HamsterHttp
+@using HamsterWarsV2.Client.HttpRepository.MatchHttp
 @inject IHamsterHttpRepository HamsterRepository
+@inject IMatchHttpRepository MatchRepository
 @inject NavigationManager NavigationManager
 
-@if (hamster == null)
+@if (Hamster == null)
 {
     <span>@message</span>
 }
 else
 {
     <WrapperContainerBattleComponent>
-        <CardGalleryComponent Heading="@hamster.Name" Source="@hamster.ImgName">
+        <CardGalleryComponent Heading="@Hamster.Name" Source="@Hamster.ImgName">
             <p>
-                Age: @hamster.Age<br />
-                Loves: @hamster.Loves<br />
-                Favourite food: @hamster.FavFood<br />
-                Games played: @hamster.Games<br />
-                Games won: @hamster.Wins<br />
-                Totalt defeats: @hamster.Defeats
+                Age: @Hamster.Age<br />
+                Loves: @Hamster.Loves<br />
+                Favourite food: @Hamster.FavFood<br />
+                Games played: @Hamster.Games<br />
+                Games won: @Hamster.Wins<br />
+                Totalt defeats: @Hamster.Defeats
             </p>
         </CardGalleryComponent>
     </WrapperContainerBattleComponent>
@@ -27,37 +29,29 @@ else
     <button class="btn btn-danger float-start" @onclick="DeleteHamster">
         Delete Hamster
     </button>
-
-    @*    <button class="btn btn-warning" @onclick="@(() => EditHamster(@hamster.Id))">
-        Edit
-    </button>*@
 }
+<WrapperContainerBattleComponent>
+    @if (Matches == null || Matches.Count == 0)
+    {
+        <br />
 
-@*@if (MatchService.Matches == null || MatchService.Matches.Count == 0)
-{
-    <br />
-
-    <span>Loading all matches...</span>
-}
-else
-{
-    <ListMatchComponent Matches="@MatchService.Matches" Context="match">
-        <TableHeader>
-            <th>ID</th>
-            <th>Winner</th>
-            <th>Loser</th>
-        </TableHeader>
-        <RowTemplate>
-            <td>@match.Id</td>
-            <td>@match.WinnerId</td>
-            <td>@match.LoserId</td>
-        </RowTemplate>
-    </ListMatchComponent>
-}*@
+        <span>Loading all matches...</span>
+    }
+    else
+    {
+        @foreach(var match in Matches)
+        {
+            <th>Match Id: </th><td>@match.Id</td><br />
+            <th>Hamster Id:</th><td>@match.WinnerId</td><br />
+            <th>Defeated:</th> <td>@match.LoserId</td><br />
+        }
+    }
+</WrapperContainerBattleComponent>
 
 @code {
 
-    private HamsterDto? hamster = null;
+    private HamsterDto? Hamster { get; set; } = null;
+    private List<MatchDto>? Matches { get; set; } = new List<MatchDto>();
     private string message = string.Empty;
 
     [Parameter]
@@ -65,42 +59,13 @@ else
 
     protected async override Task OnInitializedAsync()
     {
-        //hamster = await MatchService.GetAllHamsterMatches(Id);
-        hamster = await HamsterRepository.GetHamster(Id);
+        Hamster = await HamsterRepository.GetHamster(Id);
+        Matches = await MatchRepository.GetHamsterMatches(Id);
     }
 
     async void DeleteHamster()
     {
-        await HamsterRepository.DeleteHamster(hamster.Id);
+        await HamsterRepository.DeleteHamster(Hamster.Id);
         NavigationManager.NavigateTo("/gallery");
     }
-
-    //protected override async Task OnParametersSetAsync()
-    //{
-    //    //message = "Getting hamster..";
-    //    //var hamster = await HamsterRepository.GetHamster(Id);
-
-    //    //if (!result.Success)
-    //    //{
-    //    //    message = result.Message;
-    //    //}
-    //    //else if(result.Data.Deleted == true)
-    //    //{
-    //    //    hamster = result.Data;
-    //    //    hamster.Name = "Hamster has been deleted";
-    //    //    hamster.Age = 0;
-    //    //    hamster.Loves = "Points remains to keep everyone happy";
-    //    //    hamster.FavFood = "Not much to see here!";
-    //    //    hamster.ImgName = string.Empty;
-    //    //}
-    //    //if (result.Success)
-    //    //{
-    //    //    hamster = result.Data;
-    //    //}
-    //}
-    //void EditHamster(int hamsterId)
-    //{
-    //    NavigationManager.NavigateTo($"edit/{hamsterId}");
-    //}
-
 }

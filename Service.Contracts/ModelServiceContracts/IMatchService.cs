@@ -24,6 +24,10 @@ public interface IMatchService
     /// Metod som tar bort en match.
     /// </summary>
     Task DeleteMatchAsync(int id, bool trackChanges);
-
+    /// <summary>
+    /// Metod som hämtar alla vunna matchar här hamsterId matchar.
+    /// </summary>
+    /// <param name="hamsterId">Id på den hamstern</param>
+    /// <returns>Om det finns vunna matchar som returneras den i en lista.</returns>
     Task<IEnumerable<MatchDto>> GetAllHamsterMatchesAsync(int hamsterId, bool trackChanges);
 }

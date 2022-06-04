@@ -32,14 +32,41 @@ public class MatchHttpRepository : IMatchHttpRepository
         var createdMatch = JsonSerializer.Deserialize<MatchDto>(content, _options);
     }
 
-    public Task DeleteMatch(int id)
+    public async Task DeleteMatch(int id)
     {
-        throw new NotImplementedException();
+        var result = await _http.DeleteAsync($"/matches/{id}");
+        var content = await result.Content.ReadAsStringAsync();
+        if (result.IsSuccessStatusCode == false)
+        {
+            throw new ApplicationException(content);
+        }
     }
 
-    public Task<MatchDto> GetMatch(int id)
+    public async Task<List<MatchDto>> GetHamsterMatches(int hamsterId)
     {
-        throw new NotImplementedException();
+        var result = await _http.GetAsync($"/matchWinners/{hamsterId}");
+        var content = await result.Content.ReadAsStringAsync();
+
+        if (result.IsSuccessStatusCode == false)
+        {
+            throw new ApplicationException(content);
+        }
+
+        var matches = JsonSerializer.Deserialize<List<MatchDto>>(content, _options);
+        return matches;
+    }
+
+    public async Task<MatchDto> GetMatch(int id)
+    {
+        var result = await _http.GetAsync($"/matches/{id}");
+        var content = await result.Content.ReadAsStringAsync();
+        if (result.IsSuccessStatusCode == false)
+        {
+            throw new ApplicationException(content);
+        }
+        var match = JsonSerializer.Deserialize<MatchDto>(content, _options);
+        //Måste man ha en kontroll här? Kontrollen "är" redan gjord?
+        return match;
     }
 
     public async Task<List<MatchDto>> GetMatches()

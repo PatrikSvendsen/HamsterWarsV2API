@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using BusinessLogic.Extensions;
 using Contracts;
 using Entities.Exceptions.NotFoundException.NotFoundException;
 using Entities.Models;
@@ -13,7 +12,6 @@ internal sealed class HamsterService : IHamsterService
     private readonly IRepositoryManager _repository;
     private readonly ILoggerManager _logger;
     private readonly IMapper _mapper;
-    //private readonly IExtensionMethods<Hamster> _extensions;
     private static Random rnd = new Random();
 
     public HamsterService(IRepositoryManager repository, ILoggerManager logger,
@@ -48,27 +46,23 @@ internal sealed class HamsterService : IHamsterService
     public async Task<IEnumerable<HamsterDto>> GetTop5HamstersAsync(bool trackChanges)
     {
         var hamsters = await _repository.Hamster.GetAllHamstersAsync(trackChanges);
-        
-        //TODO Kontrollera om denna fungerar korrekt
-
         var hamstersDto = _mapper.Map<IEnumerable<HamsterDto>>(hamsters);
-
+        
         if (hamstersDto.Count() is 0)
         {
             throw new HamstersNotFoundException();
         }
 
-        var top5Hamsters = hamstersDto.Take(5).OrderByDescending(w => w.Wins).ToList();
-
+        var top5Hamsters = hamstersDto
+                            .OrderByDescending(w => w.Wins)
+                            .Take(5)
+                            .ToList();
         return top5Hamsters;
     }
 
     public async Task<IEnumerable<HamsterDto>> GetBot5HamstersAsync(bool trackChanges)
     {
         var hamsters = await _repository.Hamster.GetAllHamstersAsync(trackChanges);
-
-        //TODO Kontrollera om denna fungerar korrekt
-
         var hamstersDto = _mapper.Map<IEnumerable<HamsterDto>>(hamsters);
 
         if (hamstersDto.Count() is 0)
@@ -76,7 +70,10 @@ internal sealed class HamsterService : IHamsterService
             throw new HamstersNotFoundException();
         }
 
-        var bot5Hamsters = hamstersDto.Take(5).OrderByDescending(w => w.Defeats).ToList();
+        var bot5Hamsters = hamstersDto
+                            .OrderByDescending(w => w.Defeats)
+                            .Take(5)
+                            .ToList();
 
         return bot5Hamsters;
     }
