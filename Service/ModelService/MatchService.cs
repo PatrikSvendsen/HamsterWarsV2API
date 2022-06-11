@@ -5,7 +5,6 @@ using Entities.Models;
 using Service.Contracts.ModelServiceContracts;
 using Shared.DataTransferObjects.Match;
 
-
 namespace Service.ModelService;
 
 internal sealed class MatchService : IMatchService
@@ -32,7 +31,6 @@ internal sealed class MatchService : IMatchService
         await _repository.SaveAsync();
 
         var matchToReturn = _mapper.Map<MatchDto>(matchEntity);
-
         return matchToReturn;
     }
 
@@ -62,8 +60,7 @@ internal sealed class MatchService : IMatchService
         var hamsterMatches = await _repository.Match.GetMatchesAsync(trackChanges: false);
 
         var allMatches = hamsterMatches.Where(h => h.WinnerId == hamsterId).ToList();
-
-        if (hamsterMatches.Count() is 0)
+        if (allMatches is null)
         {
             throw new MatchesNotFoundException();
         }
@@ -87,7 +84,7 @@ internal sealed class MatchService : IMatchService
     public async Task<IEnumerable<MatchDto>> GetMatchesAsync(bool trackChanges)
     {
         var matchFromDb = await _repository.Match.GetMatchesAsync(trackChanges);
-        if (matchFromDb.Count() is 0) //TODO Går det att göra snyggare?
+        if (matchFromDb is null)
         {
             throw new MatchesNotFoundException();
         }

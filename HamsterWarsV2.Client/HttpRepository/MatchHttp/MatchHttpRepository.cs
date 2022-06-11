@@ -64,8 +64,8 @@ public class MatchHttpRepository : IMatchHttpRepository
         {
             throw new ApplicationException(content);
         }
+
         var match = JsonSerializer.Deserialize<MatchDto>(content, _options);
-        //Måste man ha en kontroll här? Kontrollen "är" redan gjord?
         return match;
     }
 
@@ -77,6 +77,7 @@ public class MatchHttpRepository : IMatchHttpRepository
         {
             throw new ApplicationException(content);
         }
+
         var matches = JsonSerializer.Deserialize<List<MatchDto>>(content, _options);
         return matches;
     }

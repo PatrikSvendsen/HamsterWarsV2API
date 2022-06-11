@@ -30,16 +30,13 @@ internal sealed class HamsterService : IHamsterService
         await _repository.SaveAsync();
 
         var hamsterToReturn = _mapper.Map<HamsterDto>(hamsterEntity);
-
         return hamsterToReturn;
     }
 
     public async Task<IEnumerable<HamsterDto>> GetAllHamstersAsync(bool trackChanges)
     {
         var hamsters = await _repository.Hamster.GetAllHamstersAsync(trackChanges);
-
         var hamstersDto = _mapper.Map<IEnumerable<HamsterDto>>(hamsters);
-
         return hamstersDto;
     }
 
@@ -64,7 +61,6 @@ internal sealed class HamsterService : IHamsterService
     {
         var hamsters = await _repository.Hamster.GetAllHamstersAsync(trackChanges);
         var hamstersDto = _mapper.Map<IEnumerable<HamsterDto>>(hamsters);
-
         if (hamstersDto.Count() is 0)
         {
             throw new HamstersNotFoundException();
@@ -74,7 +70,6 @@ internal sealed class HamsterService : IHamsterService
                             .OrderByDescending(w => w.Defeats)
                             .Take(5)
                             .ToList();
-
         return bot5Hamsters;
     }
 
@@ -87,7 +82,6 @@ internal sealed class HamsterService : IHamsterService
         }
 
         var hamsterDto = _mapper.Map<HamsterDto>(hamster);
-
         return hamsterDto;
     }
 
@@ -119,14 +113,11 @@ internal sealed class HamsterService : IHamsterService
     public async Task<HamsterDto> GetRandomHamsterAsync(bool trackChanges)
     {
         var hamsters = await _repository.Hamster.GetAllHamstersAsync(trackChanges: false);
-        
         hamsters.ToList();
-
         int n = rnd.Next(1, hamsters.Count());
         var rndHamster = hamsters.Where(x => x.Id.Equals(n)).FirstOrDefault();
 
         var hamsterDto = _mapper.Map<HamsterDto>(rndHamster);
-
         return hamsterDto;
     }
 
@@ -149,7 +140,6 @@ internal sealed class HamsterService : IHamsterService
         var twoRandomHamsters = hamsterList
                                     .Take(2)
                                     .ToList();
-
         return twoRandomHamsters;
     }
 }

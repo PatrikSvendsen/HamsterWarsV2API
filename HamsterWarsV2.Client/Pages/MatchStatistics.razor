@@ -2,6 +2,7 @@
 @inject IHamsterHttpRepository HamsterHttpRepository
 @using HamsterWarsV2.Client.Components
 @using HamsterWarsV2.Client.HttpRepository.HamsterHttp
+@inject NavigationManager NavigationManager
 
 
 @if (Top5Hamsters.Count == 0 || Bottom5Hamsters.Count == 0)
@@ -10,28 +11,40 @@
 }
 else
 {
-    <WrapperContainerBattleComponent Heading="Winners">
-        @foreach (var hamster in Top5Hamsters)
-        {
-            <CardGalleryComponent Heading="@hamster.Name" Source="@hamster.ImgName">
-                <p>
-                    Games Played: @hamster.Games --
-                    Wins : @hamster.Wins
-                </p>
-            </CardGalleryComponent>
-        }
-    </WrapperContainerBattleComponent>
-    <WrapperContainerBattleComponent Heading="Losers">
-        @foreach (var hamster in Bottom5Hamsters)
-        {
-            <CardGalleryComponent Heading="@hamster.Name" Source="@hamster.ImgName">
-                <p>
-                    Games Played: @hamster.Games --
-                    Defeats : @hamster.Defeats
-                </p>
-            </CardGalleryComponent>
-        }
-    </WrapperContainerBattleComponent>
+    <div class="main-container">
+        <div class="container">
+            <h4>Winners</h4>
+            @foreach (var hamster in Top5Hamsters)
+            {
+                <div>
+                    <a target="_blank" @onclick="@(() => HamsterDetails(@hamster.Id))" >
+                        <img src="@hamster.ImgName" alt="@hamster.Name" width="200" height="200">
+                    </a>
+                    <h4>@hamster.Name</h4>
+                    <div class="desc">Games Played: @hamster.Games Wins : @hamster.Wins</div>
+                </div>
+            }
+        </div>
+        <div class="container">
+            <h4>Defeated</h4>
+            @foreach (var hamster in Bottom5Hamsters)
+            {
+                <div class="">
+                    <a target="_blank" @onclick="@(() => HamsterDetails(@hamster.Id))">
+                        <img src="@hamster.ImgName" alt="@hamster.Name" width="200" height="200">
+                    </a>
+                    <h4>@hamster.Name</h4>
+                    <div class="desc">Games Played: @hamster.Games Defeats : @hamster.Defeats</div>
+                </div>
+            }
+        </div>
+    </div>
+    @*            <CardGalleryComponent Heading="@hamster.Name" Source="@hamster.ImgName">
+        <p>
+        Games Played: @hamster.Games --
+        Wins : @hamster.Wins
+        </p>
+        </CardGalleryComponent>*@
 }
 
 @code {
@@ -43,5 +56,10 @@ else
     {
         Top5Hamsters = await HamsterHttpRepository.GetTop5Hamsters();
         Bottom5Hamsters = await HamsterHttpRepository.GetBot5Hamsters();
+    }
+
+    void HamsterDetails(int hamsterId)
+    {
+        NavigationManager.NavigateTo($"hamsters/{hamsterId}");
     }
 }

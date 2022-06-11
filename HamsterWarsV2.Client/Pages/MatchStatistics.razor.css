@@ -1,0 +1,41 @@
+﻿div.gallery {
+    margin: 5px;
+    border: 1px solid #ccc;
+    float: left;
+    width: 180px;
+}
+
+    div.gallery:hover {
+        border: 1px solid #777;
+    }
+
+    div.gallery img {
+        width: 100%;
+        height: auto;
+    }
+
+div.desc {
+    padding: 10px;
+    text-align: left;
+}
+
+.main-container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+
+.container {
+    flex: 1;
+    flex-flow: column wrap;
+    justify-content: center;
+    border: 1px solid gray;
+    border-radius: 5px;
+    margin: 5px;
+    padding: 5px;
+    min-width: 300px;
+}
+
+    .container > * {
+        flex: 1;
+    }

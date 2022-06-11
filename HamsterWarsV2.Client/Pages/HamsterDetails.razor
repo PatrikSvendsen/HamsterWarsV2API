@@ -7,7 +7,7 @@
 @inject IMatchHttpRepository MatchRepository
 @inject NavigationManager NavigationManager
 
-@if (Hamster == null)
+@if (Hamster is null)
 {
     <span>@message</span>
 }
@@ -34,7 +34,6 @@ else
     @if (Matches == null || Matches.Count == 0)
     {
         <br />
-
         <span>Loading all matches...</span>
     }
     else

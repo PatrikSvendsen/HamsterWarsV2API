@@ -28,6 +28,7 @@ public class HamsterHttpRepository : IHamsterHttpRepository
         {
             throw new ApplicationException(content);
         }
+
         var createdHamster = JsonSerializer.Deserialize<HamsterDto>(content, _options);
         return createdHamster;
     }
@@ -38,10 +39,12 @@ public class HamsterHttpRepository : IHamsterHttpRepository
         var requestContent = new StringContent(hamster, Encoding.UTF8, "application/json");
         var response = await _http.PutAsync($"/hamsters/{hamsterDto.Id}", requestContent);
         var content = await response.Content.ReadAsStringAsync();
+
         if (response.IsSuccessStatusCode == false)
         {
             throw new ApplicationException(content);
         }
+
         var updatedHamster = JsonSerializer.Deserialize<HamsterDto>(content, _options);
         return updatedHamster;
     }
@@ -64,6 +67,7 @@ public class HamsterHttpRepository : IHamsterHttpRepository
         {
             throw new ApplicationException(content);
         }
+
         var hamster = JsonSerializer.Deserialize<HamsterDto>(content, _options);
         return hamster;
     }
@@ -76,6 +80,7 @@ public class HamsterHttpRepository : IHamsterHttpRepository
         {
             throw new ApplicationException(content);
         }
+
         var hamsters = JsonSerializer.Deserialize<List<HamsterDto>>(content, _options);
         return hamsters;
     }
@@ -124,6 +129,7 @@ public class HamsterHttpRepository : IHamsterHttpRepository
         {
             throw new ApplicationException("List is null");
         }
+
         return top5Hamsters;
     }
 
@@ -141,6 +147,7 @@ public class HamsterHttpRepository : IHamsterHttpRepository
         {
             throw new ApplicationException("List is null");
         }
+
         return bot5Hamsters;
     }
 }

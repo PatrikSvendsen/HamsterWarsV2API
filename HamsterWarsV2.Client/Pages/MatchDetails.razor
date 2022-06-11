@@ -1,0 +1,49 @@
+﻿@page "/matches/{id:int}"
+@using HamsterWarsV2.Client.Components
+@using HamsterWarsV2.Client.HttpRepository.HamsterHttp
+@using HamsterWarsV2.Client.HttpRepository.MatchHttp
+@inject IHamsterHttpRepository HamsterRepository
+@inject IMatchHttpRepository MatchRepository
+@inject NavigationManager NavigationManager
+
+
+@if (Match is null)
+{
+    <span>Loading all matches...</span>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>@Match.Id</tr>
+        </thead>
+        <tbody>
+            <tr>@Match.WinnerId</tr>
+            <tr>@Match.LoserId</tr>
+        <td type="button" class="btn btn-warning" @onclick="@(() => DeleteMatch(@Match.Id))">
+            Delete Match
+        </td>
+        </tbody>
+    </table>
+}
+
+@code {
+
+    [Parameter]
+    public EventCallback<List<MatchDto>> ResetList { get; set; }
+    private MatchDto Match { get; set; } = null;
+
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Match = await MatchRepository.GetMatch(Id);
+    }
+
+    async void DeleteMatch(int id)
+    {
+        await MatchRepository.DeleteMatch(id);
+        NavigationManager.NavigateTo("/history");
+    }
+}

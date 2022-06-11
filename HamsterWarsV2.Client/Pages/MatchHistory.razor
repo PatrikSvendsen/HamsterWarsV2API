@@ -12,15 +12,18 @@ else
 {
     @foreach (var match in MatchList)
     {
-        <th>ID</th>
-        <th>Winner</th>
-        <th>Loser</th>
-        <td>@match.Id</td>
-        <td>@match.WinnerId</td>
-        <td>@match.LoserId</td>
-        <td type="button" class="btn btn-warning" @onclick="@(() => DeleteMatch(@match.Id))">
-            Delete Match
-        </td>
+        <table class="table">
+            <thead>
+                <tr>@match.Id</tr>
+            </thead>
+            <tbody>
+                <tr>@match.WinnerId</tr>
+                <tr>@match.LoserId</tr>
+                <button class="btn btn-success" @onclick="@(() => MatchDetails(@match.Id))">
+                    More details
+                </button>
+            </tbody>
+        </table>
     }
 }
 
@@ -41,6 +44,11 @@ else
         //Gör ny Vy för match ?
         await MatchRepository.DeleteMatch(id);
         ResetBattle();
+    }
+
+    void MatchDetails(int matchId)
+    {
+        NavigationManager.NavigateTo($"matches/{matchId}");
     }
 
     async void ResetBattle()
