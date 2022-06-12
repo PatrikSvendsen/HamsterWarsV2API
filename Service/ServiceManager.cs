@@ -5,6 +5,7 @@ using Service.Contracts.ModelServiceContracts;
 using Service.ModelService;
 
 namespace Service;
+
 public sealed class ServiceManager : IServiceManager
 {
     private readonly Lazy<IHamsterService> _hamsterService;
@@ -18,7 +19,6 @@ public sealed class ServiceManager : IServiceManager
         _matchService = new Lazy<IMatchService>(() => new
         MatchService(repositoryManager, logger, mapper));
     }
-
 
     public IHamsterService HamsterService => _hamsterService.Value;
     public IMatchService MatchService => _matchService.Value;

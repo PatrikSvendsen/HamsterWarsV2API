@@ -17,13 +17,13 @@ else
         <thead>
             <tr>@Match.Id</tr>
         </thead>
-        <tbody>
-            <tr>@Match.WinnerId</tr>
-            <tr>@Match.LoserId</tr>
-        <td type="button" class="btn btn-warning" @onclick="@(() => DeleteMatch(@Match.Id))">
-            Delete Match
-        </td>
-        </tbody>
+            <tbody>
+                <tr>@Match.WinnerId</tr>
+                <tr>@Match.LoserId</tr>
+            <td type="button" class="btn btn-warning" @onclick="@(() => DeleteMatch(@Match.Id))">
+                Delete Match
+            </td>
+            </tbody>
     </table>
 }
 

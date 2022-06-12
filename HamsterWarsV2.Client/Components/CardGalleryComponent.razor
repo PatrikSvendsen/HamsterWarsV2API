@@ -7,36 +7,11 @@
         </div>
     </div>
 
-
 @code {
     [Parameter]
-    public string Heading { get; set; }
+    public string Heading { get; set; } 
     [Parameter]
     public string? Source { get; set; }
     [Parameter]
     public RenderFragment ChildContent { get; set; }
-
-    private bool overlayVisible;
-    private bool editMode;
-
-    void ToggleEdit()
-    {
-        editMode = true;
-        overlayVisible = false;
-    }
-
-    void ShowOverlay()
-    {
-        overlayVisible = true;
-    }
-
-    void HideOverlay()
-    {
-        overlayVisible = false;
-    }
-
-    void HandleEditCancelled()
-    {
-        editMode = false;
-    }
 }

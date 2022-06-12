@@ -1,5 +1,6 @@
 ﻿global using Shared.DataTransferObjects.Hamster;
 global using Shared.DataTransferObjects.Match;
+global using Shared.DataTransferObjects.User;
 using HamsterWarsV2.Client;
 using HamsterWarsV2.Client.Extensions;
 using Microsoft.AspNetCore.Components.Web;

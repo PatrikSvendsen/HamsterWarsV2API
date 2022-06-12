@@ -22,10 +22,7 @@ internal sealed class MatchService : IMatchService
 
     public async Task<MatchDto> CreateMatchAsync(MatchForCreationDto matchForCreationDto, bool trackChanges)
     {
-        var matchEntity = _mapper.Map<Match>(matchForCreationDto);
-
-        //TODO Finns ingen spärr om en hamster inte existerer. Match kommer skapas oavsett. 
-        // Kanske ska ha en spärr _här_? 
+        var matchEntity = _mapper.Map<Match>(matchForCreationDto); 
 
         _repository.Match.CreateMatch(matchEntity);
         await _repository.SaveAsync();
@@ -36,9 +33,6 @@ internal sealed class MatchService : IMatchService
 
     public async Task DeleteMatchAsync(int id, bool trackChanges)
     {
-        //TODO Här bör koden ligga för de hamstrar som blir påverkade av deleten.
-        // Ska resultaten återställas?
-
         var matchToDelete = await _repository.Match.GetMatchAsync(id, trackChanges: false);
         if (matchToDelete is null)
         {
