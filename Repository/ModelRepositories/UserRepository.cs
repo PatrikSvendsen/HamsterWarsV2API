@@ -1,4 +1,5 @@
-﻿using Contracts.ModelContracts;
+﻿
+using Contracts.ModelContracts;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,11 +12,14 @@ internal sealed class UserRepository : RepositoryBase<User>, IUserRepository
     {
     }
 
-    public Task<int> Register(User user, string password)
-    {
+    public void RegisterUser(User user) => Create(user);
 
-    }
+    public void DeleteUser(User user) => Delete(user);
 
     public async Task<bool> UserExist(string email, bool trackChanges) =>
         await FindByCondition(user => user.Email.ToLower().Equals(email.ToLower()), trackChanges).AnyAsync();
+
+
+
+
 }

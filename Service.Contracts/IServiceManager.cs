@@ -6,4 +6,5 @@ public interface IServiceManager
 {
     IHamsterService HamsterService { get; }
     IMatchService MatchService { get; }
+    IUserService UserService { get; }
 }

@@ -73,7 +73,7 @@ public class HamsterController : ControllerBase
         {
             return BadRequest("HamsterForCreationDto object is null");
         }
-        if (ModelState.IsValid == false)
+        if (ModelState.IsValid is false)
         {
             return UnprocessableEntity(ModelState);
         }

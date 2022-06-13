@@ -1,4 +1,5 @@
-﻿using HamsterWarsV2.Client.HttpRepository.HamsterHttp;
+﻿using HamsterWarsV2.Client.HttpRepository.AuthHttp;
+using HamsterWarsV2.Client.HttpRepository.HamsterHttp;
 using HamsterWarsV2.Client.HttpRepository.MatchHttp;
 
 namespace HamsterWarsV2.Client.Extensions;
@@ -9,5 +10,6 @@ public static class ServiceExtensions
     {
         services.AddScoped<IHamsterHttpRepository, HamsterHttpRepository>();
         services.AddScoped<IMatchHttpRepository, MatchHttpRepository>();
-    } 
+        services.AddScoped<IAuthHttpRepository, AuthHttpRepository>();
+    }
 }

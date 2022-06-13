@@ -1,4 +1,7 @@
 ﻿@page "/register"
+@using HamsterWarsV2.Client.HttpRepository.AuthHttp;
+@inject IAuthHttpRepository AuthHttpRepository
+@inject NavigationManager NavigationManager
 
 <PageTitle>Register</PageTitle>
 
@@ -25,13 +28,13 @@
 </EditForm>
 
 
-
 @code {
 
     UserRegisterDto user = new UserRegisterDto();
 
-    void HandleRegistration()
+    async void HandleRegistration()
     {
-        Console.WriteLine($"Register User with the Email {user.Email}");
+        var newUser = AuthHttpRepository.RegisterUser(user);
+        NavigationManager.NavigateTo($"/index");
     }
 }
