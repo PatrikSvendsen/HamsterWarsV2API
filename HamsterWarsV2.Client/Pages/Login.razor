@@ -1,4 +1,10 @@
 ﻿@page "/login"
+@using Blazored.LocalStorage
+@using HamsterWarsV2.Client.HttpRepository.AuthHttp
+@inject IAuthHttpRepository AuthHttpRepository
+@inject ILocalStorageService LocalStorage
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <PageTitle>Login</PageTitle>
 
@@ -18,14 +24,25 @@
     </div>
     <button type="submit" class="btn btn-primary">Login</button>
 </EditForm>
+<div class="text-danger">
+    <span>@errorMessage</span>
+</div>
 
 
 @code {
-    private UserLogin user = new UserLogin();
+    private UserLoginDto user = new UserLoginDto();
+
+    private string errorMessage = string.Empty;
 
     private async Task HandleLogin()
     {
-        Console.WriteLine("Log me in! ");
+        var result = await AuthHttpRepository.LoginUser(user);
+
+        errorMessage = string.Empty;
+        await LocalStorage.SetItemAsync("authToken", result);
+        await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        NavigationManager.NavigateTo("");
+
     }
 
 }

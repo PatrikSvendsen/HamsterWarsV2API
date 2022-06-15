@@ -11,5 +11,6 @@ public static class ServiceExtensions
         services.AddScoped<IHamsterHttpRepository, HamsterHttpRepository>();
         services.AddScoped<IMatchHttpRepository, MatchHttpRepository>();
         services.AddScoped<IAuthHttpRepository, AuthHttpRepository>();
+        services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
     }
 }

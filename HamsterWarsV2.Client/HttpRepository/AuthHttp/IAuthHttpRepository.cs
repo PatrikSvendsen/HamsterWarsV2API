@@ -3,4 +3,6 @@
 public interface IAuthHttpRepository
 {
     Task<UserRegisterDto> RegisterUser(UserRegisterDto userRegisterDto);
+
+    Task<string> LoginUser(UserLoginDto userLoginDto);
 }

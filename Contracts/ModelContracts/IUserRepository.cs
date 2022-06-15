@@ -9,4 +9,6 @@ public interface IUserRepository
     void DeleteUser(User user);
 
     Task<bool> UserExist(string email, bool trackChanges);
+
+    Task<User> GetUserByEmail(string email, bool trackChanges);
 }

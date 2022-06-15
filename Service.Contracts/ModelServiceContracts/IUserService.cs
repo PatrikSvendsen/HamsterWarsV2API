@@ -11,9 +11,12 @@ public interface IUserService
     /// <param name="password"></param>
     /// <param name="trackChanges"></param>
     /// <returns></returns>
-    Task<UserDto> RegisterAsync(UserRegisterDto user, string password);
+    Task<UserDto> RegisterAsync(UserRegisterDto userRegister, string password);
 
     Task DeleteUserAsync(int id, bool trackChanges);
 
     Task<bool> UserExistsAsync(string email, bool trackChanges);
+
+    Task<bool> LoginAsync(UserLoginDto userLogin, bool trackChanges);
+
 }

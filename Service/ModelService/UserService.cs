@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Contracts;
+using Entities.Exceptions.BadRequestException;
+using Entities.Exceptions.NotFoundException.NotFoundException;
 using Entities.Models;
 using Service.Contracts.ModelServiceContracts;
 using Shared.DataTransferObjects.User;
@@ -23,6 +25,21 @@ internal sealed class UserService : IUserService
     public Task DeleteUserAsync(int id, bool trackChanges)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<bool> LoginAsync(UserLoginDto userLogin, bool trackChanges)
+    {
+        var userDb = await _repository.User.GetUserByEmail(userLogin.Email, trackChanges: false);
+         
+        if (userDb is null)
+        {
+            throw new UserNotFoundException(userLogin.Email);
+        }
+        else if (!VerifyPasswordHash(userLogin.Password, userDb.PasswordHash, userDb.PasswordSalt))
+        {
+            throw new UserBadRequestException();
+        }
+        return true;
     }
 
     public async Task<UserDto> RegisterAsync(UserRegisterDto userRegisterDto, string password)
@@ -68,6 +85,15 @@ internal sealed class UserService : IUserService
             passwordSalt = hmac.Key;
             passwordHash = hmac
                 .ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+        }
+    }
+
+    private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
+    {
+        using (var hmac = new HMACSHA512(passwordSalt))
+        {
+            var computeHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            return computeHash.SequenceEqual(passwordHash);
         }
     }
 }
