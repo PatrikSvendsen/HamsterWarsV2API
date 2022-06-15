@@ -1,0 +1,30 @@
+﻿
+
+<table class="table">
+    <thead>
+        <tr>@TableHeader</tr>
+    </thead>
+    <tbody>
+        @foreach (var match in Matches)
+        {
+            if (RowTemplate is not null)
+            {
+                <tr>@RowTemplate(match)</tr>
+                @ChildContent
+            }
+        }
+    </tbody>
+</table>
+
+
+@code {
+    [Parameter]
+    public RenderFragment? TableHeader { get; set; }
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public RenderFragment<MatchDto>? RowTemplate { get; set; }
+
+    [Parameter]
+    public IReadOnlyList<MatchDto>? Matches { get; set; }
+    }

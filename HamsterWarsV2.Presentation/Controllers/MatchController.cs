@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects.Match;
 
@@ -37,7 +38,7 @@ public class MatchController : ControllerBase
         return Ok(hamsterMatches);
     }
 
-    [HttpPost]
+    [HttpPost, Authorize(Roles = "Admin")]
     [Route("/matches")]
     public async Task<IActionResult> CreateMatch([FromBody] MatchForCreationDto match)
     {
@@ -56,7 +57,7 @@ public class MatchController : ControllerBase
         return CreatedAtRoute(new { id = matchToReturn.Id }, matchToReturn);
     }
 
-    [HttpDelete]
+    [HttpDelete, Authorize(Roles = "Admin")]
     [Route("/matches/{id}")]
     public async Task<IActionResult> DeleteMatch(int id)
     {

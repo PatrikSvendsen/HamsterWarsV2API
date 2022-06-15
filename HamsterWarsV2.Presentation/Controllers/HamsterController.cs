@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects.Hamster;
 
@@ -65,7 +66,7 @@ public class HamsterController : ControllerBase
         return Ok(hamsters);
     }
 
-    [HttpPost]
+    [HttpPost, Authorize(Roles = "Admin")]
     [Route("/hamsters")]
     public async Task<IActionResult> CreateHamster([FromBody] HamsterForCreationDto hamster)
     {
@@ -84,7 +85,7 @@ public class HamsterController : ControllerBase
         return CreatedAtRoute("HamsterById", new { id = createdHamster.Id }, createdHamster);
     }
 
-    [HttpDelete]
+    [HttpDelete, Authorize(Roles = "Admin")]
     [Route("/hamsters/{id:int}")]
     public async Task<IActionResult> DeleteHamster(int id)
     {
@@ -92,7 +93,7 @@ public class HamsterController : ControllerBase
         return NoContent();
     }
 
-    [HttpPut]
+    [HttpPut, Authorize(Roles = "Admin")]
     [Route("/hamsters/{id:int}")]
     public async Task<IActionResult> UpdateHamster(int id, [FromBody] HamsterToUpdateDto hamster)
     {

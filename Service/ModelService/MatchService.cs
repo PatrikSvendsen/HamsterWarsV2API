@@ -70,6 +70,12 @@ internal sealed class MatchService : IMatchService
         {
             throw new MatchNotFoundException(id);
         }
+        var hamsters = await _repository.Hamster.GetAllHamstersAsync(trackChanges);
+
+        matchDb.Hamsters = hamsters
+            .Where(e => e.Id == matchDb.WinnerId)
+            .Where(f => f.Id == matchDb.LoserId)
+            .ToList();
 
         var match = _mapper.Map<MatchDto>(matchDb);
         return match;

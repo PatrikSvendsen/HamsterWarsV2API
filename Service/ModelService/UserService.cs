@@ -22,9 +22,16 @@ internal sealed class UserService : IUserService
         _mapper = mapper;
     }
 
-    public Task DeleteUserAsync(int id, bool trackChanges)
+    public async Task DeleteUserAsync(string email, bool trackChanges)
     {
-        throw new NotImplementedException();
+        var userToDelete = await _repository.User.GetUserByEmail(email, trackChanges);
+        if (userToDelete is null)
+        {
+            throw new UserNotFoundException(email);
+        }
+
+        _repository.User.DeleteUser(userToDelete);
+        await _repository.SaveAsync();
     }
 
     public async Task<bool> LoginAsync(UserLoginDto userLogin, bool trackChanges)
@@ -35,26 +42,29 @@ internal sealed class UserService : IUserService
         {
             throw new UserNotFoundException(userLogin.Email);
         }
+        else if (userDb.Role != "Admin")
+        {
+            throw new UserBadRequestException("User is not an Admin");
+        }
         else if (!VerifyPasswordHash(userLogin.Password, userDb.PasswordHash, userDb.PasswordSalt))
         {
-            throw new UserBadRequestException();
+            throw new UserBadRequestException("Password is wrong, please try again");
         }
         return true;
     }
 
     public async Task<UserDto> RegisterAsync(UserRegisterDto userRegisterDto, string password)
     {
-        //var userEntity = _mapper.Map<User>(userRegisterDto);
+        var userExist = await _repository.User.GetUserByEmail(userRegisterDto.Email, trackChanges: false);
+        if (userExist is not null)
+        {
+            throw new UserExistBadRequestException($"This email already exist: {userRegisterDto.Email}");
+        }
         var userRegisterEntity = _mapper.Map<UserRegister>(userRegisterDto);
 
         var newUser = new UserDto();
 
         _mapper.Map(userRegisterEntity, newUser);
-
-        //if (await UserExistsAsync(userEntity.Email, trackChanges: false))
-        //{
-        //    throw new Exception();//TODO Här måste en bättre exception ligga för UserBadRequest eller något
-        //}
 
         CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
         newUser.PasswordHash = passwordHash;
@@ -71,12 +81,18 @@ internal sealed class UserService : IUserService
         return userToReturn;
     }
 
-    public async Task<bool> UserExistsAsync(string email, bool trackChanges)
+    public async Task<UserDto> GetUserByEmailAsync(string email, bool trackChanges)
     {
-        throw new NotImplementedException();
-    }
+        var user = await _repository.User.GetUserByEmail(email, trackChanges);
 
-    //TODO Ska den verkligen ligga här?
+        if (user is null)
+        {
+            throw new UserNotFoundException(email);
+        }
+
+        var userDto = _mapper.Map<UserDto>(user);
+        return userDto;
+    }
     private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
     {
         // Denna hmac genererar en "nyckel" för salt som används för att kryptera lösenord

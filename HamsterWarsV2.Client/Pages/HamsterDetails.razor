@@ -6,6 +6,7 @@
 @inject IHamsterHttpRepository HamsterRepository
 @inject IMatchHttpRepository MatchRepository
 @inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 @if (Hamster is null)
 {
@@ -25,24 +26,33 @@ else
             </p>
         </CardGalleryComponent>
     </WrapperContainerBattleComponent>
-
-    <button class="btn btn-danger float-start" @onclick="DeleteHamster">
-        Delete Hamster
-    </button>
+    <WrapperContainerBattleComponent>
+        <AuthorizeView>
+            <Authorized>
+                <button class="btn btn-danger float-start" @onclick="DeleteHamster">
+                    Delete Hamster
+                </button>
+            </Authorized>
+        </AuthorizeView>
+    </WrapperContainerBattleComponent>
 }
+
 <WrapperContainerBattleComponent>
     @if (Matches == null || Matches.Count == 0)
     {
         <br />
-        <span>Loading all matches...</span>
+        <span>@matchesMessage</span>
     }
     else
     {
-        @foreach(var match in Matches)
+        @foreach (var match in Matches)
         {
-            <th>Match Id: </th><td>@match.Id</td><br />
-            <th>Hamster Id:</th><td>@match.WinnerId</td><br />
-            <th>Defeated:</th> <td>@match.LoserId</td><br />
+            <div class="wrapper">
+                <div class="box">Match Id: @match.Id</div>
+                <div class="box">Match Winner: @match.WinnerId</div>
+                <div class="box">Match Loser: @match.LoserId</div>
+                <div class="box">Timestamp: @match.TimeStamp</div>
+            </div>
         }
     }
 </WrapperContainerBattleComponent>
@@ -52,6 +62,7 @@ else
     private HamsterDto? Hamster { get; set; } = null;
     private List<MatchDto>? Matches { get; set; } = new List<MatchDto>();
     private string message = string.Empty;
+    private string matchesMessage = string.Empty;
 
     [Parameter]
     public int Id { get; set; }
@@ -59,12 +70,22 @@ else
     protected async override Task OnInitializedAsync()
     {
         Hamster = await HamsterRepository.GetHamster(Id);
-        Matches = await MatchRepository.GetHamsterMatches(Id);
+        LoadMatches();
     }
 
     async void DeleteHamster()
     {
         await HamsterRepository.DeleteHamster(Hamster.Id);
         NavigationManager.NavigateTo("/gallery");
+    }
+
+    async void LoadMatches()
+    {
+        Matches = await MatchRepository.GetHamsterMatches(Id);
+        if (Matches.Count() is 0)
+        {
+            matchesMessage = "No matches found";
+        }
+        StateHasChanged();
     }
 }

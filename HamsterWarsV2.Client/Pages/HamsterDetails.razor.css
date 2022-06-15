@@ -1,0 +1,4 @@
+﻿.wrapper {
+    display: grid;
+    grid-template-columns: 100px 160px 160px 200px 250px;
+}

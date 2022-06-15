@@ -2,8 +2,8 @@
 
 public class UserBadRequestException : BadRequestException
 {
-    public UserBadRequestException()
-        : base($"Password is wrong, please try again")
+    public UserBadRequestException(string message)
+        : base(message)
     {
     }
 }

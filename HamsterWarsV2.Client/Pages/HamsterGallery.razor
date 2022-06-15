@@ -3,25 +3,35 @@
 @using HamsterWarsV2.Client.HttpRepository.HamsterHttp
 @inject IHamsterHttpRepository HamsterRepository
 @inject NavigationManager NavigationManager
+@using System.Security.Claims
+
+<AuthorizeView Roles="Admin, admin">
+    <Authorized>
+        <button class="btn btn-primary" @onclick="CreateHamster">
+            <i class="oi oi-plus"></i>
+            Click here to add a new hamster
+        </button>
+    </Authorized>
+    <NotAuthorized>
+        <button type="button" class="btn btn-primary" disabled data-bs-toggle="button" autocomplete="off">
+            Please login as an Admin to add a new hamster</button>
+    </NotAuthorized>
+</AuthorizeView>
 
 
-    <button class="btn btn-primary" @onclick="CreateHamster">
-        <i class="oi oi-plus"></i>
-        Click here to add a new hamster
-    </button>
-    <WrapperContainerBattleComponent>
-        @foreach (var hamster in Hamsters)
-        {
-                <CardGalleryComponent Heading="@hamster.Name" Source="@hamster.ImgName">
-                    <p>
-                        This hamster is @hamster.Age years old and loves @hamster.Loves.
-                    </p>
-                    <button class="btn btn-success" @onclick="@(() => HamsterDetails(@hamster.Id))">
-                        More details
-                    </button>
-                </CardGalleryComponent>
-        }
-    </WrapperContainerBattleComponent>
+<WrapperContainerBattleComponent>
+    @foreach (var hamster in Hamsters)
+    {
+        <CardGalleryComponent Heading="@hamster.Name" Source="@hamster.ImgName">
+            <p>
+                This hamster is @hamster.Age years old and loves @hamster.Loves.
+            </p>
+            <button class="btn btn-success" @onclick="@(() => HamsterDetails(@hamster.Id))">
+                More details
+            </button>
+        </CardGalleryComponent>
+    }
+</WrapperContainerBattleComponent>
 
 @code {
 

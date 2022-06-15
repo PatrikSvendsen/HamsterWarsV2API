@@ -8,6 +8,7 @@ namespace HamsterWarsV2.MappingProfile;
 
 public class MappingProfile : Profile
 {
+    // Mappingprofile är något jag måste bli bättre på. 
     public MappingProfile()
     {
         CreateMap<Hamster, HamsterDto>();
@@ -17,17 +18,12 @@ public class MappingProfile : Profile
         CreateMap<HamsterToUpdateDto, Hamster>();
         CreateMap<HamsterDto, List<Hamster>>();
         CreateMap<List<Hamster>, HamsterDto>();
-
         CreateMap<UserDto, UserRegisterDto>();
-
         CreateMap<User, UserDto>();
         CreateMap<UserDto, User>();
-
         CreateMap<UserRegister, UserRegisterDto>();
-
         CreateMap<UserRegister, UserDto>();
         CreateMap<UserDto, UserRegister>();
-
         CreateMap<UserRegisterDto, UserRegister>();
     }
 }

@@ -9,6 +9,7 @@
 <PageTitle>Login</PageTitle>
 
 <h3>Login</h3>
+<h4>Only Admins can log in everyone else will throw an Exception</h4>
 
 <EditForm Model="user" OnValidSubmit="HandleLogin">
     <DataAnnotationsValidator />
@@ -37,7 +38,6 @@
     private async Task HandleLogin()
     {
         var result = await AuthHttpRepository.LoginUser(user);
-
         errorMessage = string.Empty;
         await LocalStorage.SetItemAsync("authToken", result);
         await AuthenticationStateProvider.GetAuthenticationStateAsync();

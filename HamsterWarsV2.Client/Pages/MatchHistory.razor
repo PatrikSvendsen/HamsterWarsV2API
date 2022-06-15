@@ -3,6 +3,7 @@
 @using HamsterWarsV2.Client.HttpRepository.MatchHttp
 @inject IMatchHttpRepository MatchRepository
 @inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 @if (MatchList == null || MatchList.Count == 0)
 {
@@ -12,18 +13,21 @@ else
 {
     @foreach (var match in MatchList)
     {
-        <table class="table">
-            <thead>
-                <tr>@match.Id</tr>
-            </thead>
-            <tbody>
-                <tr>@match.WinnerId</tr>
-                <tr>@match.LoserId</tr>
-                <button class="btn btn-success" @onclick="@(() => MatchDetails(@match.Id))">
-                    More details
-                </button>
-            </tbody>
-        </table>
+        <div class="wrapper">
+            <div class="box">Match Id: @match.Id</div>
+            <div class="box">Match Winner: @match.WinnerId</div>
+            <div class="box">Match Loser: @match.LoserId</div>
+            <div class="box">Timestamp: @match.TimeStamp</div>
+            <div>
+                <AuthorizeView>
+                    <Authorized>
+                        <button class="btn btn-success" @onclick="@(() => MatchDetails(@match.Id))">
+                            More details
+                        </button>
+                    </Authorized>
+                </AuthorizeView>
+            </div>
+        </div>
     }
 }
 
@@ -36,14 +40,6 @@ else
     protected override async Task OnInitializedAsync()
     {
         MatchList = await MatchRepository.GetMatches();
-    }
-
-    async void DeleteMatch(int id)
-    {
-        //TODO Den laddar inte om korrekt efter bortaggning av match. Delete fungerar.
-        //Gör ny Vy för match ?
-        await MatchRepository.DeleteMatch(id);
-        ResetBattle();
     }
 
     void MatchDetails(int matchId)

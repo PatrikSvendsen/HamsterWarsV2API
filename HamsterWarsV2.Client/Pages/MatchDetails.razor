@@ -5,7 +5,7 @@
 @inject IHamsterHttpRepository HamsterRepository
 @inject IMatchHttpRepository MatchRepository
 @inject NavigationManager NavigationManager
-
+@attribute [Authorize]
 
 @if (Match is null)
 {
@@ -15,15 +15,15 @@ else
 {
     <table class="table">
         <thead>
-            <tr>@Match.Id</tr>
+            <tr>Match Id: @Match.Id</tr>
         </thead>
-            <tbody>
-                <tr>@Match.WinnerId</tr>
-                <tr>@Match.LoserId</tr>
-            <td type="button" class="btn btn-warning" @onclick="@(() => DeleteMatch(@Match.Id))">
-                Delete Match
-            </td>
-            </tbody>
+        <tbody>
+            <tr>Match Winner: @Match.WinnerId ::</tr>
+            <tr>Match Loser: @Match.LoserId :: </tr>
+        <td type="button" class="btn btn-warning" @onclick="@(() => DeleteMatch(@Match.Id))">
+            Delete Match
+        </td>
+        </tbody>
     </table>
 }
 
@@ -31,7 +31,7 @@ else
 
     [Parameter]
     public EventCallback<List<MatchDto>> ResetList { get; set; }
-    private MatchDto Match { get; set; } = null;
+    private MatchDto? Match { get; set; }
 
     [Parameter]
     public int Id { get; set; }

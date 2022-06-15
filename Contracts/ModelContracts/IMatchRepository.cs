@@ -16,7 +16,7 @@ public interface IMatchRepository
     /// <returns>Ett objekt som representerar den match som matchar id.</returns>
     Task<Match> GetMatchAsync(int matchId, bool trackChanges);
     /// <summary>
-    /// Metod som skapar ett opjekt i databasen utifrån inkommande.
+    /// Metod som skapar ett objekt i databasen utifrån inkommande.
     /// </summary>
     /// <param name="match">Det objekt som skall skapas i databasen</param>
     void CreateMatch(Match match);
