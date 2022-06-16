@@ -93,7 +93,7 @@ public class HamsterController : ControllerBase
         return NoContent();
     }
 
-    [HttpPut, Authorize(Roles = "Admin")]
+    [HttpPut]
     [Route("/hamsters/{id:int}")]
     public async Task<IActionResult> UpdateHamster(int id, [FromBody] HamsterToUpdateDto hamster)
     {

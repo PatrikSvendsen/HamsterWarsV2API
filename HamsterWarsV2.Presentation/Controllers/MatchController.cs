@@ -38,7 +38,7 @@ public class MatchController : ControllerBase
         return Ok(hamsterMatches);
     }
 
-    [HttpPost, Authorize(Roles = "Admin")]
+    [HttpPost]
     [Route("/matches")]
     public async Task<IActionResult> CreateMatch([FromBody] MatchForCreationDto match)
     {
